@@ -1,98 +1,151 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import React from "react";
+import { StyleSheet, View, Text, ScrollView } from "react-native";
+import { AppBar } from "@/src/shared/components/AppBar";
+import { AppButton } from "@/src/shared/components/AppButton";
+import { AppTextField } from "@/src/shared/components/AppTextField";
+import { LiquidGlass } from "@/src/shared/components/LiquidGlass";
+import { Colors } from "@/src/core/constants/colors";
+import { Sizes } from "@/src/core/constants/sizes";
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <View style={styles.container}>
+      <AppBar title="Wafi Ecommerce" />
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <LiquidGlass style={styles.featuredCard} borderRadius={Sizes.radiusLg}>
+          <View style={styles.cardContent}>
+            <Text style={styles.cardTitle}>New Collection</Text>
+            <Text style={styles.cardSubtitle}>
+              Explore the latest trends in fashion and lifestyle.
+            </Text>
+            <AppButton
+              title="Shop Now"
+              onPress={() => {}}
+              style={styles.cardButton}
+            />
+          </View>
+        </LiquidGlass>
+
+        <View style={styles.formSection}>
+          <View style={styles.buttonRow}>
+            <AppButton
+              title="Categories"
+              onPress={() => {}}
+              variant="outline"
+              style={styles.flexButton}
+            />
+            <View style={{ width: Sizes.md }} />
+            <AppButton
+              title="Deals"
+              onPress={() => {}}
+              style={styles.flexButton}
+            />
+          </View>
+        </View>
+
+        <Text style={styles.sectionTitle}>Recent Items</Text>
+        <View style={styles.grid}>
+          {[1, 2, 3, 4].map((item) => (
+            <LiquidGlass
+              key={item}
+              style={styles.gridItem}
+              borderRadius={Sizes.radiusMd}
+            >
+              <View style={styles.itemImagePlaceholder} />
+              <View style={styles.itemInfo}>
+                <Text style={styles.itemName}>Premium Item {item}</Text>
+                <Text style={styles.itemPrice}>৳2,500</Text>
+              </View>
+            </LiquidGlass>
+          ))}
+        </View>
+
+        {/* Padding for bottom nav */}
+        <View style={{ height: 100 }} />
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  scrollContent: {
+    padding: Sizes.md,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  sectionTitle: {
+    fontSize: Sizes.fontXl,
+    fontWeight: "800",
+    color: Colors.textPrimary,
+    marginBottom: Sizes.md,
+    marginTop: Sizes.lg,
+  },
+  featuredCard: {
+    height: 200,
+    marginBottom: Sizes.lg,
+  },
+  cardContent: {
+    flex: 1,
+    padding: Sizes.lg,
+    justifyContent: "center",
+  },
+  cardTitle: {
+    fontSize: Sizes.fontXxl,
+    fontWeight: "900",
+    color: Colors.primary,
+  },
+  cardSubtitle: {
+    fontSize: Sizes.fontMd,
+    color: Colors.textSecondary,
+    marginTop: Sizes.xs,
+    marginBottom: Sizes.lg,
+  },
+  cardButton: {
+    alignSelf: "flex-start",
+    height: 48,
+  },
+  formSection: {
+    marginTop: Sizes.sm,
+  },
+  buttonRow: {
+    flexDirection: "row",
+  },
+  flexButton: {
+    flex: 1,
+  },
+  grid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+  gridItem: {
+    width: "48%",
+    height: 220,
+    marginBottom: Sizes.md,
+  },
+  itemImagePlaceholder: {
+    height: 140,
+    backgroundColor: "rgba(255,255,255,0.3)",
+    borderTopLeftRadius: Sizes.radiusMd,
+    borderTopRightRadius: Sizes.radiusMd,
+  },
+  itemInfo: {
+    padding: Sizes.sm,
+  },
+  itemName: {
+    fontSize: Sizes.fontSm,
+    fontWeight: "700",
+    color: Colors.textPrimary,
+  },
+  itemPrice: {
+    fontSize: Sizes.fontBase,
+    fontWeight: "800",
+    color: Colors.secondary,
+    marginTop: Sizes.xs,
   },
 });
