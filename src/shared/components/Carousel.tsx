@@ -5,9 +5,9 @@ import { Image, View } from "react-native";
 import ReanimatedCarousel from "react-native-reanimated-carousel";
 
 const data = [
-  { image: "https://wafilife-media-backend.wafilife.com/2026/04/ilham-freebook-moebuy1f-v3m7.jpg" },
-  { image: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80" },
-  { image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&q=80" },
+  { image: "https://backoffice.ghorerbazar.com/banner/o1uH11775363016-light.jpg" },
+  { image: "https://backoffice.ghorerbazar.com/banner/sCUkg1774768074-dark.png" },
+  { image: "https://backoffice.ghorerbazar.com/banner/wvLKI1771837751.jpeg" },
 ];
 
 export function Carousel() {
