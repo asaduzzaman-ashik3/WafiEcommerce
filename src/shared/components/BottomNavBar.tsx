@@ -39,7 +39,7 @@ const TabItem = ({
       }),
       // Flicker/Scale animation
       Animated.spring(itemScale, {
-        toValue: 0.8,
+        toValue: 0.9,
         useNativeDriver: true,
         speed: 50,
         bounciness: 8,
@@ -119,7 +119,7 @@ export const BottomNavBar: React.FC<BottomTabBarProps> = ({
 
   return (
     <View
-      className="absolute bottom-0 left-0 right-0 px-lg bg-transparent"
+      className="absolute bottom-0 left-0 right-0 px-md bg-transparent"
       style={{ paddingBottom: insets.bottom + Sizes.sm }}
     >
       <LiquidGlass borderRadius={32} className="h-[80px]" pressable={false}>

@@ -1,4 +1,9 @@
-// src/core/constants/sizes.ts
+import { Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
+
+export const window = { width, height };
+
 export const Sizes = {
   // Spacing scale
   xs:  4,
@@ -40,3 +45,4 @@ export const Sizes = {
   glassBlur:    18,
   screenBlur:   40,
 } as const;
+
