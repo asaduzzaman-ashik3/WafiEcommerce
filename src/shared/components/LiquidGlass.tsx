@@ -42,14 +42,33 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
   ...rest
 }) => {
   const scale = useRef(new Animated.Value(1)).current;
+  const rippleScale = useRef(new Animated.Value(0)).current;
+  const rippleOpacity = useRef(new Animated.Value(0)).current;
 
-  const onPressIn = () => {
+  const onPressIn = (event: any) => {
+    // Scale animation
     Animated.spring(scale, {
-      toValue: 0.97,
+      toValue: 0.98,
       useNativeDriver: true,
       speed: 50,
-      bounciness: 8,
+      bounciness: 4,
     }).start();
+
+    // Ripple animation
+    rippleScale.setValue(0);
+    rippleOpacity.setValue(0.2);
+    Animated.parallel([
+      Animated.timing(rippleScale, {
+        toValue: 2,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(rippleOpacity, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+    ]).start();
   };
 
   const onPressOut = () => {
@@ -97,6 +116,24 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
         style={{ borderRadius }}
       />
 
+      {/* Ripple Layer */}
+      <Animated.View
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: 200,
+          height: 200,
+          marginLeft: -100,
+          marginTop: -100,
+          borderRadius: 100,
+          backgroundColor: 'white',
+          opacity: rippleOpacity,
+          transform: [{ scale: rippleScale }],
+          zIndex: 1,
+        }}
+      />
+
       {/* Layer 4 — Content */}
       <View className="flex-1 relative z-[3]">{children}</View>
     </Animated.View>
@@ -110,4 +147,5 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
     </Pressable>
   );
 };
+
 

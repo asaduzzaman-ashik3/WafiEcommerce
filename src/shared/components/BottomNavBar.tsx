@@ -2,10 +2,79 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/src/core/constants/colors';
 import { Sizes } from '@/src/core/constants/sizes';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import React, { useRef } from 'react';
+import { Animated, Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LiquidGlass } from './LiquidGlass';
+
+const TabItem = ({ 
+  label, 
+  isFocused, 
+  onPress, 
+  route 
+}: { 
+  label: string; 
+  isFocused: boolean; 
+  onPress: () => void; 
+  route: string;
+}) => {
+  const rippleScale = useRef(new Animated.Value(0)).current;
+  const rippleOpacity = useRef(new Animated.Value(0)).current;
+
+  const handlePressIn = () => {
+    rippleScale.setValue(0);
+    rippleOpacity.setValue(0.3);
+    Animated.parallel([
+      Animated.timing(rippleScale, {
+        toValue: 1,
+        duration: 350,
+        useNativeDriver: true,
+      }),
+      Animated.timing(rippleOpacity, {
+        toValue: 0,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+
+  const getIcon = (name: string, color: string) => {
+    let iconName: any = 'house.fill';
+    if (name === 'index') iconName = 'house.fill';
+    if (name === 'orders') iconName = 'bag.fill';
+    if (name === 'cart') iconName = 'cart.fill';
+    if (name === 'profile') iconName = 'person.fill';
+    return <IconSymbol size={22} name={iconName} color={color} />;
+  };
+
+  return (
+    <Pressable
+      onPress={onPress}
+      onPressIn={handlePressIn}
+      className="flex-col items-center justify-center flex-1"
+    >
+      <View className="w-[42px] h-[42px] items-center justify-center rounded-full mb-[2px] overflow-hidden">
+        {/* Ripple Effect Layer */}
+        <Animated.View
+          style={{
+            position: 'absolute',
+            width: 42,
+            height: 42,
+            borderRadius: 21,
+            backgroundColor: Colors.primary,
+            opacity: rippleOpacity,
+            transform: [{ scale: rippleScale }],
+          }}
+        />
+        
+        <View className={`w-full h-full items-center justify-center rounded-full ${isFocused ? 'bg-primary/10' : ''}`}>
+           {getIcon(route, isFocused ? Colors.primary : Colors.textSecondary)}
+        </View>
+      </View>
+      <Text className={`text-[10px] font-semibold ${isFocused ? 'text-primary' : 'text-text-secondary'}`}>{label}</Text>
+    </Pressable>
+  );
+};
 
 export const BottomNavBar: React.FC<BottomTabBarProps> = ({
   state,
@@ -28,7 +97,6 @@ export const BottomNavBar: React.FC<BottomTabBarProps> = ({
           {state.routes.map((route, index) => {
             const { options } = descriptors[route.key];
             const label = options.title !== undefined ? options.title : route.name;
-
             const isFocused = state.index === index;
 
             const onPress = () => {
@@ -43,27 +111,14 @@ export const BottomNavBar: React.FC<BottomTabBarProps> = ({
               }
             };
 
-            const getIcon = (name: string, color: string) => {
-              let iconName: any = 'house.fill';
-              if (name === 'index') iconName = 'house.fill';
-              if (name === 'orders') iconName = 'bag.fill';
-              if (name === 'cart') iconName = 'cart.fill';
-              if (name === 'profile') iconName = 'person.fill';
-              return <IconSymbol size={22} name={iconName} color={color} />;
-            };
-
             return (
-              <TouchableOpacity
-                key={index}
+              <TabItem
+                key={route.key}
+                label={label}
+                isFocused={isFocused}
                 onPress={onPress}
-                className="flex-col items-center justify-center flex-1"
-                activeOpacity={0.7}
-              >
-                <View className={`w-[42px] h-[42px] items-center justify-center rounded-full mb-[2px] overflow-hidden ${isFocused ? 'bg-primary/10' : ''}`}>
-                   {getIcon(route.name, isFocused ? Colors.primary : Colors.textSecondary)}
-                </View>
-                <Text className={`text-[10px] font-semibold ${isFocused ? 'text-primary' : 'text-text-secondary'}`}>{label}</Text>
-              </TouchableOpacity>
+                route={route.name}
+              />
             );
           })}
         </View>
@@ -71,4 +126,5 @@ export const BottomNavBar: React.FC<BottomTabBarProps> = ({
     </View>
   );
 };
+
 
