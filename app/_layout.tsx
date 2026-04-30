@@ -4,6 +4,8 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { MainLayout } from '@/src/shared/layout/MainLayout';
+import '../global.css'
+
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
 

@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
 import { AppBar } from "@/src/shared/components/AppBar";
 import { AppButton } from "@/src/shared/components/AppButton";
-import { AppTextField } from "@/src/shared/components/AppTextField";
 import { LiquidGlass } from "@/src/shared/components/LiquidGlass";
 import { Colors } from "@/src/core/constants/colors";
 import { Sizes } from "@/src/core/constants/sizes";
