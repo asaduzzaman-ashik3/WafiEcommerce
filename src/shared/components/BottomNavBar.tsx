@@ -1,29 +1,31 @@
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/src/core/constants/colors';
-import { Sizes } from '@/src/core/constants/sizes';
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import React, { useRef } from 'react';
-import { Animated, Pressable, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LiquidGlass } from './LiquidGlass';
+import { IconSymbol } from "@/components/ui/icon-symbol";
+import { Colors } from "@/src/core/constants/colors";
+import { Sizes } from "@/src/core/constants/sizes";
+import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import React, { useRef } from "react";
+import { Animated, Pressable, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { LiquidGlass } from "./LiquidGlass";
 
-const TabItem = ({ 
-  label, 
-  isFocused, 
-  onPress, 
-  route 
-}: { 
-  label: string; 
-  isFocused: boolean; 
-  onPress: () => void; 
+const TabItem = ({
+  label,
+  isFocused,
+  onPress,
+  route,
+}: {
+  label: string;
+  isFocused: boolean;
+  onPress: () => void;
   route: string;
 }) => {
   const rippleScale = useRef(new Animated.Value(0)).current;
   const rippleOpacity = useRef(new Animated.Value(0)).current;
+  const itemScale = useRef(new Animated.Value(1)).current;
 
   const handlePressIn = () => {
+    // Ripple animation
     rippleScale.setValue(0);
-    rippleOpacity.setValue(0.3);
+    rippleOpacity.setValue(0.4);
     Animated.parallel([
       Animated.timing(rippleScale, {
         toValue: 1,
@@ -35,15 +37,31 @@ const TabItem = ({
         duration: 400,
         useNativeDriver: true,
       }),
+      // Flicker/Scale animation
+      Animated.spring(itemScale, {
+        toValue: 0.8,
+        useNativeDriver: true,
+        speed: 50,
+        bounciness: 8,
+      }),
     ]).start();
   };
 
+  const handlePressOut = () => {
+    Animated.spring(itemScale, {
+      toValue: 1,
+      useNativeDriver: true,
+      speed: 20,
+      bounciness: 12,
+    }).start();
+  };
+
   const getIcon = (name: string, color: string) => {
-    let iconName: any = 'house.fill';
-    if (name === 'index') iconName = 'house.fill';
-    if (name === 'orders') iconName = 'bag.fill';
-    if (name === 'cart') iconName = 'cart.fill';
-    if (name === 'profile') iconName = 'person.fill';
+    let iconName: any = "house.fill";
+    if (name === "index") iconName = "house.fill";
+    if (name === "orders") iconName = "bag.fill";
+    if (name === "cart") iconName = "cart.fill";
+    if (name === "profile") iconName = "person.fill";
     return <IconSymbol size={22} name={iconName} color={color} />;
   };
 
@@ -51,27 +69,43 @@ const TabItem = ({
     <Pressable
       onPress={onPress}
       onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
       className="flex-col items-center justify-center flex-1"
     >
-      <View className="w-[42px] h-[42px] items-center justify-center rounded-full mb-[2px] overflow-hidden">
+      <Animated.View
+        className="w-[42px] h-[42px] items-center justify-center rounded-full mb-[2px] overflow-hidden"
+        style={{ transform: [{ scale: itemScale }] }}
+      >
+        {/* Focused Background Layer */}
+        {isFocused && (
+          <View
+            className="absolute inset-0"
+            style={{ backgroundColor: "rgba(58, 107, 42, 0.12)" }}
+          />
+        )}
+
         {/* Ripple Effect Layer */}
         <Animated.View
           style={{
-            position: 'absolute',
+            position: "absolute",
             width: 42,
             height: 42,
             borderRadius: 21,
-            backgroundColor: Colors.primary,
+            backgroundColor: "white",
             opacity: rippleOpacity,
             transform: [{ scale: rippleScale }],
           }}
         />
-        
-        <View className={`w-full h-full items-center justify-center rounded-full ${isFocused ? 'bg-primary/10' : ''}`}>
-           {getIcon(route, isFocused ? Colors.primary : Colors.textSecondary)}
+
+        <View className="w-full h-full items-center justify-center rounded-full">
+          {getIcon(route, isFocused ? Colors.primary : Colors.textSecondary)}
         </View>
-      </View>
-      <Text className={`text-[10px] font-semibold ${isFocused ? 'text-primary' : 'text-text-secondary'}`}>{label}</Text>
+      </Animated.View>
+      <Text
+        className={`text-[10px] font-semibold ${isFocused ? "text-primary" : "text-text-secondary"}`}
+      >
+        {label}
+      </Text>
     </Pressable>
   );
 };
@@ -84,24 +118,21 @@ export const BottomNavBar: React.FC<BottomTabBarProps> = ({
   const insets = useSafeAreaInsets();
 
   return (
-    <View 
-      className="absolute bottom-0 left-0 right-0 px-lg bg-transparent" 
+    <View
+      className="absolute bottom-0 left-0 right-0 px-lg bg-transparent"
       style={{ paddingBottom: insets.bottom + Sizes.sm }}
     >
-      <LiquidGlass
-        borderRadius={32}
-        className="h-[80px]"
-        pressable={false}
-      >
+      <LiquidGlass borderRadius={32} className="h-[80px]" pressable={false}>
         <View className="flex-1 flex-row items-center justify-around px-sm">
           {state.routes.map((route, index) => {
             const { options } = descriptors[route.key];
-            const label = options.title !== undefined ? options.title : route.name;
+            const label =
+              options.title !== undefined ? options.title : route.name;
             const isFocused = state.index === index;
 
             const onPress = () => {
               const event = navigation.emit({
-                type: 'tabPress',
+                type: "tabPress",
                 target: route.key,
                 canPreventDefault: true,
               });
@@ -126,5 +157,3 @@ export const BottomNavBar: React.FC<BottomTabBarProps> = ({
     </View>
   );
 };
-
-
