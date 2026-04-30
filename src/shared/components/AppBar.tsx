@@ -55,7 +55,7 @@ export const AppBar: React.FC<AppBarProps> = ({
                 <IconSymbol
                   name="line.3.horizontal"
                   size={24}
-                  color={Colors.textPrimary}
+                  color={Colors.primary}
                 />
               </TouchableOpacity>
             )}
@@ -63,9 +63,7 @@ export const AppBar: React.FC<AppBarProps> = ({
 
           {/* Center */}
           <View className="flex-1 items-center justify-center">
-            <Text className="text-[16px] font-bold text-text-primary">
-              {title}
-            </Text>
+            <Text className="text-[16px] font-bold text-primary">{title}</Text>
           </View>
 
           {/* Right */}
@@ -76,16 +74,9 @@ export const AppBar: React.FC<AppBarProps> = ({
                 activeOpacity={0.7}
                 className="w-9 h-9 items-center justify-center"
               >
-                <IconSymbol
-                  name="bell.fill"
-                  size={22}
-                  color={Colors.textPrimary}
-                />
+                <IconSymbol name="bell.fill" size={22} color={Colors.primary} />
                 {notificationCount > 0 && (
-                  <View
-                    className="absolute top-0 right-0 min-w-[14px] h-[14px] rounded-full items-center justify-center px-[3px]"
-                    style={{ backgroundColor: Colors.error ?? "#FF3B30" }}
-                  >
+                  <View className="absolute top-0 right-0 min-w-[14px] h-[14px] bg-red-500 rounded-full items-center justify-center px-[3px]">
                     <Text className="text-[9px] font-bold text-white">
                       {notificationCount > 99 ? "99+" : notificationCount}
                     </Text>
