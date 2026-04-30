@@ -1,11 +1,11 @@
-import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { LiquidGlass } from './LiquidGlass';
+import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/src/core/constants/colors';
 import { Sizes } from '@/src/core/constants/sizes';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { IconSymbol } from '@/components/ui/icon-symbol';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import React from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { LiquidGlass } from './LiquidGlass';
 
 export const BottomNavBar: React.FC<BottomTabBarProps> = ({
   state,
@@ -15,13 +15,16 @@ export const BottomNavBar: React.FC<BottomTabBarProps> = ({
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={[styles.container, { paddingBottom: insets.bottom + Sizes.sm }]}>
+    <View 
+      className="absolute bottom-0 left-0 right-0 px-lg bg-transparent" 
+      style={{ paddingBottom: insets.bottom + Sizes.sm }}
+    >
       <LiquidGlass
         borderRadius={32}
-        style={styles.glass}
+        className="h-[80px]"
         pressable={false}
       >
-        <View style={styles.content}>
+        <View className="flex-1 flex-row items-center justify-around px-sm">
           {state.routes.map((route, index) => {
             const { options } = descriptors[route.key];
             const label = options.title !== undefined ? options.title : route.name;
@@ -53,13 +56,13 @@ export const BottomNavBar: React.FC<BottomTabBarProps> = ({
               <TouchableOpacity
                 key={index}
                 onPress={onPress}
-                style={styles.tabItem}
+                className="flex-col items-center justify-center flex-1"
                 activeOpacity={0.7}
               >
-                <View style={[styles.iconContainer, isFocused && styles.activeIconContainer]}>
+                <View className={`w-[42px] h-[42px] items-center justify-center rounded-full mb-[2px] overflow-hidden ${isFocused ? 'bg-primary/10' : ''}`}>
                    {getIcon(route.name, isFocused ? Colors.primary : Colors.textSecondary)}
                 </View>
-                <Text style={[styles.label, isFocused && styles.activeLabel]}>{label}</Text>
+                <Text className={`text-[10px] font-semibold ${isFocused ? 'text-primary' : 'text-text-secondary'}`}>{label}</Text>
               </TouchableOpacity>
             );
           })}
@@ -69,49 +72,3 @@ export const BottomNavBar: React.FC<BottomTabBarProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingHorizontal: Sizes.lg,
-    backgroundColor: 'transparent',
-  },
-  glass: {
-    height: 80,
-  },
-  content: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    paddingHorizontal: Sizes.sm,
-  },
-  tabItem: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-  },
-  iconContainer: {
-    width: 42,
-    height: 42,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 21,
-    marginBottom: 2,
-    overflow: 'hidden',
-  },
-  activeIconContainer: {
-    backgroundColor: 'rgba(58, 107, 42, 0.12)',
-  },
-  label: {
-    fontSize: 10,
-    fontWeight: '600',
-    color: Colors.textSecondary,
-  },
-  activeLabel: {
-    color: Colors.primary,
-  },
-});

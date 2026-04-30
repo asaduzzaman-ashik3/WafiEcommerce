@@ -1,15 +1,14 @@
+import { Colors } from '@/src/core/constants/colors';
+import { Sizes } from '@/src/core/constants/sizes';
 import React from 'react';
 import {
-  View,
-  TextInput,
   Text,
-  StyleSheet,
+  TextInput,
   TextInputProps,
+  View,
   ViewStyle,
 } from 'react-native';
 import { LiquidGlass } from './LiquidGlass';
-import { Colors } from '@/src/core/constants/colors';
-import { Sizes } from '@/src/core/constants/sizes';
 
 interface AppTextFieldProps extends TextInputProps {
   label?: string;
@@ -24,49 +23,21 @@ export const AppTextField: React.FC<AppTextFieldProps> = ({
   ...props
 }) => {
   return (
-    <View style={[styles.container, containerStyle]}>
-      {label && <Text style={styles.label}>{label}</Text>}
+    <View className="mb-md" style={containerStyle}>
+      {label && <Text className="text-xs font-semibold text-text-secondary mb-xs ml-xs">{label}</Text>}
       <LiquidGlass
         borderRadius={Sizes.radiusMd}
         pressable={false}
-        style={styles.glass}
+        className="h-14 px-md justify-center"
       >
         <TextInput
-          style={styles.input}
+          className="text-base text-text-primary font-medium"
           placeholderTextColor={Colors.textMuted}
           {...props}
         />
       </LiquidGlass>
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      {error && <Text className="text-[10px] text-red-600 mt-xs ml-xs">{error}</Text>}
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: Sizes.md,
-  },
-  label: {
-    fontSize: Sizes.fontSm,
-    fontWeight: '600',
-    color: Colors.textSecondary,
-    marginBottom: Sizes.xs,
-    marginLeft: Sizes.xs,
-  },
-  glass: {
-    height: 56,
-    paddingHorizontal: Sizes.md,
-    justifyContent: 'center',
-  },
-  input: {
-    fontSize: Sizes.fontBase,
-    color: Colors.textPrimary,
-    fontWeight: '500',
-  },
-  errorText: {
-    fontSize: Sizes.fontXs,
-    color: Colors.error,
-    marginTop: Sizes.xs,
-    marginLeft: Sizes.xs,
-  },
-});

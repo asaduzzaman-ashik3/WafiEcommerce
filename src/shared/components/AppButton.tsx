@@ -2,7 +2,6 @@ import React from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   ActivityIndicator,
   ViewStyle,
   TextStyle,
@@ -30,50 +29,43 @@ export const AppButton: React.FC<AppButtonProps> = ({
   disabled,
   variant = 'primary',
 }) => {
-  const getVariantStyles = () => {
+  const getVariantClasses = () => {
     switch (variant) {
       case 'primary':
-        return {
-          backgroundColor: Colors.primaryPale,
-          color: Colors.primary,
-        };
+        return 'bg-primary-pale';
       case 'secondary':
-        return {
-          backgroundColor: Colors.secondaryPale,
-          color: Colors.secondary,
-        };
+        return 'bg-secondary-pale';
       case 'outline':
-        return {
-          backgroundColor: 'transparent',
-          borderWidth: 1,
-          borderColor: Colors.primary,
-          color: Colors.primary,
-        };
+        return 'bg-transparent border border-primary';
       default:
-        return {
-          backgroundColor: Colors.primaryPale,
-          color: Colors.primary,
-        };
+        return 'bg-primary-pale';
     }
   };
 
-  const vStyles = getVariantStyles();
+  const getTextColor = () => {
+    switch (variant) {
+      case 'primary': return Colors.primary;
+      case 'secondary': return Colors.secondary;
+      case 'outline': return Colors.primary;
+      default: return Colors.primary;
+    }
+  };
 
   return (
     <LiquidGlass
       onPress={disabled || loading ? undefined : onPress}
-      style={[
-        styles.button,
-        style,
-        disabled && styles.disabled,
-      ]}
+      className={`h-14 px-xl min-w-[120px] ${getVariantClasses()} ${disabled ? 'opacity-50' : ''}`}
+      style={style}
       borderRadius={Sizes.radiusFull}
     >
-      <View style={styles.innerContent}>
+      <View className="flex-1 items-center justify-center">
         {loading ? (
-          <ActivityIndicator color={vStyles.color} size="small" />
+          <ActivityIndicator color={getTextColor()} size="small" />
         ) : (
-          <Text style={[styles.text, { color: vStyles.color }, textStyle]}>
+          <Text 
+            className="text-base font-bold text-center" 
+            style={[{ color: getTextColor() }, textStyle]}
+          >
             {title}
           </Text>
         )}
@@ -82,23 +74,3 @@ export const AppButton: React.FC<AppButtonProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  button: {
-    height: 56,
-    paddingHorizontal: Sizes.xl,
-    minWidth: 120,
-  },
-  innerContent: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    fontSize: Sizes.fontBase,
-    fontWeight: '700',
-    textAlign: 'center',
-  },
-  disabled: {
-    opacity: 0.5,
-  },
-});

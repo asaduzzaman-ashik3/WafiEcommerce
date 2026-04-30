@@ -10,21 +10,21 @@
  *  4. {children}
  */
 
+import { Colors } from '@/src/core/constants/colors';
+import { BlurView } from 'expo-blur';
 import React, { useRef } from 'react';
 import {
-  StyleSheet,
-  View,
-  ViewStyle,
   Animated,
   Pressable,
   PressableProps,
+  View,
+  ViewStyle,
 } from 'react-native';
-import { BlurView } from 'expo-blur';
-import { Colors } from '@/src/core/constants/colors';
 
 export interface LiquidGlassProps extends PressableProps {
   children: React.ReactNode;
   style?: ViewStyle | ViewStyle[];
+  className?: string;
   borderRadius?: number;
   blurIntensity?: number;
   /** If false, touch ripple animation is disabled */
@@ -34,6 +34,7 @@ export interface LiquidGlassProps extends PressableProps {
 export const LiquidGlass: React.FC<LiquidGlassProps> = ({
   children,
   style,
+  className,
   borderRadius = 24,
   blurIntensity = 22,
   pressable = true,
@@ -61,34 +62,43 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
   };
 
   const inner = (
-    <Animated.View style={[styles.wrapper, { borderRadius }, { transform: [{ scale }] }, style]}>
+    <Animated.View 
+      className={`overflow-hidden bg-transparent ${className || ''}`}
+      style={[
+        { 
+          borderRadius,
+          transform: [{ scale }],
+          shadowColor: Colors.glassShadow,
+          shadowOffset: { width: 0, height: 6 },
+          shadowOpacity: 1,
+          shadowRadius: 16,
+          elevation: 8,
+        }, 
+        style
+      ]}
+    >
       {/* Layer 1 — Blur */}
       <BlurView
         intensity={blurIntensity}
         tint="light"
-        style={[StyleSheet.absoluteFill, { borderRadius }]}
+        className="absolute inset-0"
+        style={{ borderRadius }}
       />
 
       {/* Layer 2 — Tint */}
       <View
-        style={[
-          StyleSheet.absoluteFill,
-          styles.tint,
-          { borderRadius },
-        ]}
+        className="absolute inset-0 bg-white/20"
+        style={{ borderRadius }}
       />
 
       {/* Layer 3 — Shine border */}
       <View
-        style={[
-          StyleSheet.absoluteFill,
-          styles.shine,
-          { borderRadius },
-        ]}
+        className="absolute inset-0 border-[1.5px] border-t-white/80 border-l-white/60 border-r-white/20 border-b-white/20 bg-transparent"
+        style={{ borderRadius }}
       />
 
       {/* Layer 4 — Content */}
-      <View style={styles.content}>{children}</View>
+      <View className="flex-1 relative z-[3]">{children}</View>
     </Animated.View>
   );
 
@@ -101,32 +111,3 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  wrapper: {
-    overflow: 'hidden',
-    // Outer shadow (mimics CSS box-shadow)
-    shadowColor: Colors.glassShadow,
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 1,
-    shadowRadius: 16,
-    elevation: 8,
-    backgroundColor: 'transparent',
-  },
-  tint: {
-    backgroundColor: 'rgba(255,255,255,0.22)',
-  },
-  shine: {
-    // Inset-like highlight: top & left edges only
-    borderWidth: 1.5,
-    borderTopColor:  'rgba(255,255,255,0.80)',
-    borderLeftColor: 'rgba(255,255,255,0.60)',
-    borderRightColor: 'rgba(255,255,255,0.20)',
-    borderBottomColor: 'rgba(255,255,255,0.20)',
-    backgroundColor: 'transparent',
-  },
-  content: {
-    flex: 1,
-    position: 'relative',
-    zIndex: 3,
-  },
-});

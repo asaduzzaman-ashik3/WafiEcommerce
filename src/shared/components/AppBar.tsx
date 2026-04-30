@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 import { LiquidGlass } from './LiquidGlass';
 import { Colors } from '@/src/core/constants/colors';
 import { Sizes } from '@/src/core/constants/sizes';
@@ -22,57 +22,28 @@ export const AppBar: React.FC<AppBarProps> = ({
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
+    <View 
+      className="px-md pb-sm" 
+      style={{ paddingTop: insets.top }}
+    >
       <LiquidGlass
         borderRadius={Sizes.radiusMd}
-        style={styles.glass}
+        className="h-app-bar"
         pressable={false}
       >
-        <View style={styles.content}>
-          <View style={styles.left}>
+        <View className="flex-1 flex-row items-center justify-between px-md">
+          <View className="flex-row items-center">
             {showBack && (
-              <TouchableOpacity onPress={onBackPress} style={styles.backButton}>
+              <TouchableOpacity onPress={onBackPress} className="mr-sm">
                 <IconSymbol name="chevron.left" size={24} color={Colors.textPrimary} />
               </TouchableOpacity>
             )}
-            <Text style={styles.title}>{title}</Text>
+            <Text className="text-[20px] font-bold text-text-primary">{title}</Text>
           </View>
-          <View style={styles.right}>{rightElement}</View>
+          <View className="flex-row items-center">{rightElement}</View>
         </View>
       </LiquidGlass>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: Sizes.md,
-    paddingBottom: Sizes.sm,
-  },
-  glass: {
-    height: Sizes.appBarHeight,
-  },
-  content: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: Sizes.md,
-  },
-  left: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  backButton: {
-    marginRight: Sizes.sm,
-  },
-  title: {
-    fontSize: Sizes.fontLg,
-    fontWeight: '700',
-    color: Colors.textPrimary,
-  },
-  right: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});

@@ -1,150 +1,75 @@
-import React from "react";
-import { StyleSheet, View, Text, ScrollView } from "react-native";
+import { Sizes } from "@/src/core/constants/sizes";
 import { AppBar } from "@/src/shared/components/AppBar";
 import { AppButton } from "@/src/shared/components/AppButton";
 import { LiquidGlass } from "@/src/shared/components/LiquidGlass";
-import { Colors } from "@/src/core/constants/colors";
-import { Sizes } from "@/src/core/constants/sizes";
+import React from "react";
+import { ScrollView, Text, View } from "react-native";
 
 export default function HomeScreen() {
   return (
-    <View style={styles.container}>
+    <View className="flex-1">
       <AppBar title="Wafi Ecommerce" />
 
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={{ padding: 16 }} // Using raw value for padding to avoid scrollContent style object
+        className="flex-1"
         showsVerticalScrollIndicator={false}
       >
-        <LiquidGlass style={styles.featuredCard} borderRadius={Sizes.radiusLg}>
-          <View style={styles.cardContent}>
-            <Text style={styles.cardTitle}>New Collection</Text>
-            <Text style={styles.cardSubtitle}>
+        <LiquidGlass className="h-[200px] mb-lg" borderRadius={Sizes.radiusLg}>
+          <View className="flex-1 p-lg justify-center">
+            <Text className="text-[32px] font-[900] text-primary">New Collection</Text>
+            <Text className="text-base text-text-secondary mt-xs mb-lg">
               Explore the latest trends in fashion and lifestyle.
             </Text>
             <AppButton
               title="Shop Now"
               onPress={() => {}}
-              style={styles.cardButton}
+              style={{ height: 48 }}
             />
           </View>
         </LiquidGlass>
 
-        <View style={styles.formSection}>
-          <View style={styles.buttonRow}>
+        <View className="mt-sm">
+          <View className="flex-row">
             <AppButton
               title="Categories"
               onPress={() => {}}
               variant="outline"
-              style={styles.flexButton}
+              className="flex-1"
             />
             <View style={{ width: Sizes.md }} />
             <AppButton
               title="Deals"
               onPress={() => {}}
-              style={styles.flexButton}
+              className="flex-1"
             />
           </View>
         </View>
 
-        <Text style={styles.sectionTitle}>Recent Items</Text>
-        <View style={styles.grid}>
+        <Text className="text-[24px] font-[800] text-text-primary mb-md mt-lg">Recent Items</Text>
+        <View className="flex-row flex-wrap justify-between">
           {[1, 2, 3, 4].map((item) => (
             <LiquidGlass
               key={item}
-              style={styles.gridItem}
+              className="w-[48%] h-[220px] mb-md"
               borderRadius={Sizes.radiusMd}
             >
-              <View style={styles.itemImagePlaceholder} />
-              <View style={styles.itemInfo}>
-                <Text style={styles.itemName}>Premium Item {item}</Text>
-                <Text style={styles.itemPrice}>৳2,500</Text>
+              <View 
+                className="h-[140px] bg-white/30" 
+                style={{ borderTopLeftRadius: Sizes.radiusMd, borderTopRightRadius: Sizes.radiusMd }}
+              />
+              <View className="p-sm">
+                <Text className="text-xs font-bold text-text-primary">Premium Item {item}</Text>
+                <Text className="text-base font-[800] text-secondary mt-xs">৳2,500</Text>
               </View>
             </LiquidGlass>
           ))}
         </View>
 
         {/* Padding for bottom nav */}
-        <View style={{ height: 100 }} />
+        <View className="h-[100px]" />
       </ScrollView>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollContent: {
-    padding: Sizes.md,
-  },
-  sectionTitle: {
-    fontSize: Sizes.fontXl,
-    fontWeight: "800",
-    color: Colors.textPrimary,
-    marginBottom: Sizes.md,
-    marginTop: Sizes.lg,
-  },
-  featuredCard: {
-    height: 200,
-    marginBottom: Sizes.lg,
-  },
-  cardContent: {
-    flex: 1,
-    padding: Sizes.lg,
-    justifyContent: "center",
-  },
-  cardTitle: {
-    fontSize: Sizes.fontXxl,
-    fontWeight: "900",
-    color: Colors.primary,
-  },
-  cardSubtitle: {
-    fontSize: Sizes.fontMd,
-    color: Colors.textSecondary,
-    marginTop: Sizes.xs,
-    marginBottom: Sizes.lg,
-  },
-  cardButton: {
-    alignSelf: "flex-start",
-    height: 48,
-  },
-  formSection: {
-    marginTop: Sizes.sm,
-  },
-  buttonRow: {
-    flexDirection: "row",
-  },
-  flexButton: {
-    flex: 1,
-  },
-  grid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-  },
-  gridItem: {
-    width: "48%",
-    height: 220,
-    marginBottom: Sizes.md,
-  },
-  itemImagePlaceholder: {
-    height: 140,
-    backgroundColor: "rgba(255,255,255,0.3)",
-    borderTopLeftRadius: Sizes.radiusMd,
-    borderTopRightRadius: Sizes.radiusMd,
-  },
-  itemInfo: {
-    padding: Sizes.sm,
-  },
-  itemName: {
-    fontSize: Sizes.fontSm,
-    fontWeight: "700",
-    color: Colors.textPrimary,
-  },
-  itemPrice: {
-    fontSize: Sizes.fontBase,
-    fontWeight: "800",
-    color: Colors.secondary,
-    marginTop: Sizes.xs,
-  },
-});
