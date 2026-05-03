@@ -1,14 +1,14 @@
-import "react-native-gesture-handler";
+import { MainLayout } from "@/layout/MainLayout";
 import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
+import "react-native-gesture-handler";
 import "react-native-reanimated";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { MainLayout } from "@/src/shared/layout/MainLayout";
-import "../global.css";
+import "../src/global.css";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
@@ -16,8 +16,8 @@ export const unstable_settings = {
   anchor: "(tabs)",
 };
 
+import { AppDrawer } from "@/components/shared/AppDrawer";
 import { Drawer } from "expo-router/drawer";
-import { AppDrawer } from "@/src/shared/components/AppDrawer";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
