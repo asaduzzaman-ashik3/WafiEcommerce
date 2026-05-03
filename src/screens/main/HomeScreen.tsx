@@ -1,15 +1,17 @@
 import { AppBar } from "@/components/shared/AppBar";
-import { AppButton } from "@/components/shared/AppButton";
 import { Carousel } from "@/components/shared/Carousel";
 import { LiquidGlass } from "@/components/shared/LiquidGlass";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/colors";
 import { Sizes } from "@/constants/sizes";
-import { Image } from "react-native";
-import React from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { HomeService } from "@/services/home_service";
+import { Banner } from "@/types/banner_types";
+import React, { useEffect, useState } from "react";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export const HomeScreen = () => {
+  const [banners, setBanners] = useState<Banner[]>([]);
+
   const products = [
     {
       id: "1",
@@ -178,12 +180,34 @@ export const HomeScreen = () => {
     },
   ];
 
+  useEffect(() => {
+    console.log("TEST LOG");
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_KEY;
+    console.log("SUPABASE URL:", supabaseUrl);
+    console.log("SUPABASE KEY:", supabaseKey);
+
+    const loadBanner = async () => {
+      try {
+        console.log("Calling API...");
+        const data = await HomeService.getBanners();
+        setBanners(data);
+        console.log("API RESPONSE:", data);
+      } catch (err) {
+        console.log("ERROR OCCURRED:");
+        console.log(err);
+      }
+    };
+
+    loadBanner();
+  }, []);
+
   return (
     <View className="flex-1">
       <AppBar title="Wafi Ecommerce" />
 
       <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
-        <Carousel></Carousel>
+        <Carousel data={banners}></Carousel>
 
         <View className="mt-sm">
           <ScrollView
@@ -200,7 +224,7 @@ export const HomeScreen = () => {
                 key={category.id}
                 borderRadius={Sizes.radiusFull}
                 onPress={() => {}}
-                style={{ height: 56 }} // ← was 44
+                style={{ height: 50 }} // ← was 44
                 pressable
               >
                 <View
@@ -215,8 +239,8 @@ export const HomeScreen = () => {
                   {/* Icon badge */}
                   <View
                     style={{
-                      width: 34, // ← was 26
-                      height: 34, // ← was 26
+                      width: 30, // ← was 26
+                      height: 30, // ← was 26
                       borderRadius: 17, // ← was 13
                       overflow: "hidden",
                       borderWidth: 1,
@@ -232,7 +256,7 @@ export const HomeScreen = () => {
                   {/* Label */}
                   <Text
                     style={{
-                      fontSize: 15, // ← was 13
+                      fontSize: 14, // ← was 13
                       fontWeight: "600",
                       color: Colors.textPrimary,
                       letterSpacing: 0.2,
