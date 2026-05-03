@@ -119,10 +119,11 @@ export const BottomNavBar: React.FC<BottomTabBarProps> = ({
 
   return (
     <View
-      className="absolute bottom-0 left-0 right-0 px-md bg-transparent"
+      className="absolute bottom-0 left-0 right-0 px-md "
       style={{ paddingBottom: insets.bottom + Sizes.sm }}
     >
-      <LiquidGlass borderRadius={32} className="h-[80px]" pressable={false}>
+      
+      <LiquidGlass borderRadius={20} className="h-[80px]" pressable={false}>
         <View className="flex-1 flex-row items-center justify-around px-sm">
           {state.routes.map((route, index) => {
             const { options } = descriptors[route.key];
