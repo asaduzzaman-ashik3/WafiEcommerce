@@ -1,15 +1,4 @@
 // src/shared/components/LiquidGlass.tsx
-/**
- * LiquidGlass — the core primitive that translates the CSS liquid-glass
- * morphism design into React Native.
- *
- * Layers (bottom → top):
- *  1. BlurView  — backdrop blur (glass-distortion equivalent)
- *  2. Tint      — rgba(255,255,255,0.25) white wash
- *  3. Shine     — inset border highlight on top & left edges
- *  4. {children}
- */
-
 import { Colors } from '@/src/core/constants/colors';
 import { BlurView } from 'expo-blur';
 import React, { useRef } from 'react';
@@ -27,7 +16,6 @@ export interface LiquidGlassProps extends PressableProps {
   className?: string;
   borderRadius?: number;
   blurIntensity?: number;
-  /** If false, touch ripple animation is disabled */
   pressable?: boolean;
 }
 
@@ -36,7 +24,7 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
   style,
   className,
   borderRadius = 24,
-  blurIntensity = 22,
+  blurIntensity = 80,           // ← raised from 22 → 80 (near-max on 0–100 scale)
   pressable = true,
   onPress,
   ...rest
@@ -46,7 +34,6 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
   const rippleOpacity = useRef(new Animated.Value(0)).current;
 
   const onPressIn = (event: any) => {
-    // Scale animation
     Animated.spring(scale, {
       toValue: 0.98,
       useNativeDriver: true,
@@ -54,7 +41,6 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
       bounciness: 4,
     }).start();
 
-    // Ripple animation
     rippleScale.setValue(0);
     rippleOpacity.setValue(0.2);
     Animated.parallel([
@@ -81,10 +67,10 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
   };
 
   const inner = (
-    <Animated.View 
+    <Animated.View
       className={`overflow-hidden bg-transparent ${className || ''}`}
       style={[
-        { 
+        {
           borderRadius,
           transform: [{ scale }],
           shadowColor: Colors.glassShadow,
@@ -92,21 +78,31 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
           shadowOpacity: 1,
           shadowRadius: 16,
           elevation: 8,
-        }, 
-        style
+        },
+        style,
       ]}
     >
-      {/* Layer 1 — Blur */}
+      {/* Layer 1a — Primary heavy blur (most of the frosting work) */}
       <BlurView
-        intensity={blurIntensity}
+        intensity={blurIntensity}          // up to 100
         tint="light"
+        experimentalBlurMethod="dimezisBlurView"  // ← stronger blur engine on Android
         className="absolute inset-0"
         style={{ borderRadius }}
       />
 
-      {/* Layer 2 — Tint */}
+      {/* Layer 1b — Second blur pass for extra depth */}
+      <BlurView
+        intensity={Math.round(blurIntensity * 0.5)}  // secondary pass at half intensity
+        tint="light"
+        experimentalBlurMethod="dimezisBlurView"
+        className="absolute inset-0"
+        style={{ borderRadius }}
+      />
+
+      {/* Layer 2 — Tint (slightly reduced so strong blur shows through) */}
       <View
-        className="absolute inset-0 bg-white/20"
+        className="absolute inset-0 bg-white/15"   // ← was /20, reduced to let blur breathe
         style={{ borderRadius }}
       />
 
@@ -147,5 +143,3 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
     </Pressable>
   );
 };
-
-

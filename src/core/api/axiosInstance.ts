@@ -1,6 +1,6 @@
 // src/core/api/axiosInstance.ts
 import axios from 'axios';
-import { AppConfig } from '../config/appConfig';
+import { AppConfig } from '../config/supabase-config';
 import {
   authRequestInterceptor,
   authErrorInterceptor,
