@@ -1,12 +1,140 @@
-import { AppButton } from "@/components/shared/AppButton";
 import { AppBar } from "@/components/shared/AppBar";
+import { AppButton } from "@/components/shared/AppButton";
 import { Carousel } from "@/components/shared/Carousel";
 import { LiquidGlass } from "@/components/shared/LiquidGlass";
+import { IconSymbol } from "@/components/ui/icon-symbol";
+import { Colors } from "@/constants/colors";
 import { Sizes } from "@/constants/sizes";
+import { Image } from "expo-image";
 import React from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export const HomeScreen = () => {
+  const products = [
+    {
+      id: "1",
+      product_id: "NH001",
+      category_id: "ORGANIC_FOOD",
+      title: "Organic Honey 500g",
+      brand_name: "PureBee",
+      description: "Raw organic honey rich in antioxidants and natural energy.",
+      image_urls: [
+        "https://images.unsplash.com/photo-1587049352851-8d4e89133924",
+        "https://images.unsplash.com/photo-1587049352851-8d4e89133924?2",
+        "https://images.unsplash.com/photo-1587049352851-8d4e89133924?3",
+      ],
+      original_price: 450,
+      discount_price: 399,
+      discount_tag: "11% OFF",
+      label_tag: "Best Seller",
+    },
+    {
+      id: "2",
+      product_id: "NH002",
+      category_id: "HERBAL",
+      title: "Aloe Vera Juice 1L",
+      brand_name: "NatureLife",
+      description: "Detoxifying aloe vera juice for digestion and skin health.",
+      image_urls: [
+        "https://images.unsplash.com/photo-1615486364462-ef6363f3c2b0",
+        "https://images.unsplash.com/photo-1615486364462-ef6363f3c2b0?2",
+      ],
+      original_price: 600,
+      discount_price: 520,
+      discount_tag: "13% OFF",
+      label_tag: "Trending",
+    },
+    {
+      id: "3",
+      product_id: "NH003",
+      category_id: "ORGANIC_FOOD",
+      title: "Chia Seeds 250g",
+      brand_name: "Organic Valley",
+      description: "High fiber superfood rich in omega-3 and protein.",
+      image_urls: [
+        "https://images.unsplash.com/photo-1615485290382-441e4d0d8f2b",
+      ],
+      original_price: 350,
+      discount_price: 299,
+      discount_tag: "15% OFF",
+      label_tag: "Superfood",
+    },
+    {
+      id: "4",
+      product_id: "NH004",
+      category_id: "BEAUTY",
+      title: "Organic Coconut Oil 500ml",
+      brand_name: "CocoPure",
+      description: "Cold-pressed coconut oil for skin, hair and cooking.",
+      image_urls: [
+        "https://images.unsplash.com/photo-1600180758890-6b94519a8ba6",
+        "https://images.unsplash.com/photo-1600180758890-6b94519a8ba6?2",
+      ],
+      original_price: 500,
+      discount_price: 450,
+      discount_tag: "10% OFF",
+      label_tag: "Natural Care",
+    },
+    {
+      id: "5",
+      product_id: "NH005",
+      category_id: "HERBAL",
+      title: "Green Tea Detox Pack",
+      brand_name: "ZenHerb",
+      description: "Refreshing green tea for weight loss and detox.",
+      image_urls: ["https://images.unsplash.com/photo-1515823064-d6e0c04616a7"],
+      original_price: 300,
+      discount_price: 250,
+      discount_tag: "17% OFF",
+      label_tag: "Healthy Choice",
+    },
+    {
+      id: "6",
+      product_id: "NH006",
+      category_id: "SUPPLEMENT",
+      title: "Spirulina Tablets 120pcs",
+      brand_name: "BioFit",
+      description: "Plant-based protein supplement for immunity boost.",
+      image_urls: [
+        "https://images.unsplash.com/photo-1622484212850-eb596d769edc",
+      ],
+      original_price: 800,
+      discount_price: 699,
+      discount_tag: "13% OFF",
+      label_tag: "Immunity Boost",
+    },
+    {
+      id: "7",
+      product_id: "NH007",
+      category_id: "ORGANIC_FOOD",
+      title: "Brown Rice 5kg",
+      brand_name: "EcoGrain",
+      description: "Whole grain brown rice for healthy diet lifestyle.",
+      image_urls: [
+        "https://images.unsplash.com/photo-1607305387299-a3d9611cd469",
+      ],
+      original_price: 700,
+      discount_price: 620,
+      discount_tag: "11% OFF",
+      label_tag: "Organic",
+    },
+    {
+      id: "8",
+      product_id: "NH008",
+      category_id: "BEAUTY",
+      title: "Herbal Face Wash Gel",
+      brand_name: "HerbalGlow",
+      description: "Chemical-free face wash for glowing natural skin.",
+      image_urls: [
+        "https://images.unsplash.com/photo-1612810436541-336d8f1d7a9c",
+      ],
+      original_price: 350,
+      discount_price: 299,
+      discount_tag: "15% OFF",
+      label_tag: "Skin Care",
+    },
+  ];
+
   return (
     <View className="flex-1">
       <AppBar title="Wafi Ecommerce" />
@@ -31,28 +159,71 @@ export const HomeScreen = () => {
           Recent Items
         </Text>
         <View className="flex-row flex-wrap justify-between">
-          {[1, 2, 3, 4].map((item) => (
-            <LiquidGlass
-              key={item}
-              className="w-[48%] h-[220px] mb-md"
-              borderRadius={Sizes.radiusMd}
-            >
-              <View
-                className="h-[140px] bg-white/30"
-                style={{
-                  borderTopLeftRadius: Sizes.radiusMd,
-                  borderTopRightRadius: Sizes.radiusMd,
-                }}
-              />
-              <View className="p-sm">
-                <Text className="text-xs font-bold text-text-primary">
-                  Premium Item {item}
-                </Text>
-                <Text className="text-base font-[800] text-secondary mt-xs">
-                  ৳2,500
-                </Text>
-              </View>
-            </LiquidGlass>
+          {products.map((item) => (
+            <View key={item.id} className="w-[48%] mb-md">
+              <LiquidGlass
+                className="overflow-hidden"
+                borderRadius={Sizes.radiusMd}
+                pressable={true}
+                onPress={() => {}}
+              >
+                <View className="relative">
+                  <View className="h-[160px] w-full bg-primary/5 items-center justify-center">
+                    <Image
+                      source={{ uri: item.image_urls[0] }}
+                      contentFit="cover"
+                      style={{ width: "100%", height: "100%" }}
+                      transition={300}
+                    />
+                    <View className="absolute inset-0 items-center justify-center -z-10">
+                      <IconSymbol
+                        name="photo.fill"
+                        size={32}
+                        color={Colors.primary + "40"}
+                      />
+                    </View>
+                  </View>
+
+                  {item.discount_tag && (
+                    <View className="absolute top-2 left-2 bg-secondary px-2 py-1 rounded-full">
+                      <Text className="text-[10px] font-bold text-white">
+                        {item.discount_tag}
+                      </Text>
+                    </View>
+                  )}
+
+                  {item.label_tag && (
+                    <View className="absolute top-2 right-2 bg-primary/80 px-2 py-1 rounded-full">
+                      <Text className="text-[10px] font-bold text-white">
+                        {item.label_tag}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+
+                <View className="p-sm">
+                  <Text
+                    className="text-xs font-bold text-text-primary h-[32px]"
+                    numberOfLines={2}
+                  >
+                    {item.title}
+                  </Text>
+
+                  <View className="flex-row items-center justify-between mt-xs">
+                    <View className="flex-row gap-1 items-center">
+                      <Text className="text-md font-bold text-primary">
+                        ৳{item.discount_price}
+                      </Text>
+                      {item.original_price > item.discount_price && (
+                        <Text className="text-[11px] text-primary/80 line-through">
+                          ৳{item.original_price}
+                        </Text>
+                      )}
+                    </View>
+                  </View>
+                </View>
+              </LiquidGlass>
+            </View>
           ))}
         </View>
 
