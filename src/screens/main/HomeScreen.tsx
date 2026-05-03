@@ -15,7 +15,8 @@ export const HomeScreen = () => {
       id: "1",
       product_id: "NH001",
       category_id: "ORGANIC_FOOD",
-      title: "Organic Honey 500g",
+      title:
+        "Organic Honey 500g Organic Honey 500gOrganic Honey 500gOrganic Honey 500gOrganic Honey 500g",
       brand_name: "PureBee",
       description: "Raw organic honey rich in antioxidants and natural energy.",
       image_urls: [
@@ -295,7 +296,7 @@ export const HomeScreen = () => {
                 <View className="p-sm">
                   <Text
                     className="text-sm font-bold text-text-primary "
-                    numberOfLines={2}
+                    numberOfLines={1}
                   >
                     {item.title}
                   </Text>
