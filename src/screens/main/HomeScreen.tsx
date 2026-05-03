@@ -5,7 +5,7 @@ import { LiquidGlass } from "@/components/shared/LiquidGlass";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/colors";
 import { Sizes } from "@/constants/sizes";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import React from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
@@ -19,9 +19,7 @@ export const HomeScreen = () => {
       brand_name: "PureBee",
       description: "Raw organic honey rich in antioxidants and natural energy.",
       image_urls: [
-        "https://images.unsplash.com/photo-1587049352851-8d4e89133924",
-        "https://images.unsplash.com/photo-1587049352851-8d4e89133924?2",
-        "https://images.unsplash.com/photo-1587049352851-8d4e89133924?3",
+        "https://backoffice.ghorerbazar.com/banner/o1uH11775363016-light.jpg",
       ],
       original_price: 450,
       discount_price: 399,
@@ -36,7 +34,7 @@ export const HomeScreen = () => {
       brand_name: "NatureLife",
       description: "Detoxifying aloe vera juice for digestion and skin health.",
       image_urls: [
-        "https://images.unsplash.com/photo-1615486364462-ef6363f3c2b0",
+        "https://backoffice.ghorerbazar.com/banner/sCUkg1774768074-dark.png",
         "https://images.unsplash.com/photo-1615486364462-ef6363f3c2b0?2",
       ],
       original_price: 600,
@@ -52,7 +50,7 @@ export const HomeScreen = () => {
       brand_name: "Organic Valley",
       description: "High fiber superfood rich in omega-3 and protein.",
       image_urls: [
-        "https://images.unsplash.com/photo-1615485290382-441e4d0d8f2b",
+        "https://backoffice.ghorerbazar.com/banner/wvLKI1771837751.jpeg",
       ],
       original_price: 350,
       discount_price: 299,
@@ -171,9 +169,11 @@ export const HomeScreen = () => {
                   <View className="h-[160px] w-full bg-primary/5 items-center justify-center">
                     <Image
                       source={{ uri: item.image_urls[0] }}
-                      contentFit="cover"
-                      style={{ width: "100%", height: "100%" }}
-                      transition={300}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        resizeMode: "cover",
+                      }}
                     />
                     <View className="absolute inset-0 items-center justify-center -z-10">
                       <IconSymbol

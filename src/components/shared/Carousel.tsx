@@ -5,8 +5,13 @@ import { Image, View } from "react-native";
 import ReanimatedCarousel from "react-native-reanimated-carousel";
 
 const data = [
-  { image: "https://backoffice.ghorerbazar.com/banner/o1uH11775363016-light.jpg" },
-  { image: "https://backoffice.ghorerbazar.com/banner/sCUkg1774768074-dark.png" },
+  {
+    image:
+      "https://backoffice.ghorerbazar.com/banner/o1uH11775363016-light.jpg",
+  },
+  {
+    image: "https://backoffice.ghorerbazar.com/banner/sCUkg1774768074-dark.png",
+  },
   { image: "https://backoffice.ghorerbazar.com/banner/wvLKI1771837751.jpeg" },
 ];
 
@@ -28,7 +33,7 @@ export function Carousel() {
           parallaxScrollingOffset: 60,
         }}
         renderItem={({ item }) => (
-          <View className="h-full px-2"> 
+          <View className="h-full px-2">
             <Image
               source={{ uri: item.image }}
               // Use rounded-3xl (approx 24px) or rounded-[32px] for custom size
