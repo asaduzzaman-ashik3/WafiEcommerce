@@ -133,6 +133,50 @@ export const HomeScreen = () => {
     },
   ];
 
+  const categories = [
+    {
+      id: 1,
+      name: "Electronics",
+      image_url:
+        "https://backoffice.ghorerbazar.com/banner/o1uH11775363016-light.jpg",
+    },
+    {
+      id: 2,
+      name: "Fashion",
+      image_url: "https://images.unsplash.com/photo-1521334884684-d80222895322",
+    },
+    {
+      id: 3,
+      name: "Groceries",
+      image_url: "https://images.unsplash.com/photo-1542838132-92c53300491e",
+    },
+    {
+      id: 4,
+      name: "Beauty & Health",
+      image_url: "https://images.unsplash.com/photo-1596462502278-27bfdc403348",
+    },
+    {
+      id: 5,
+      name: "Home Decor",
+      image_url: "https://images.unsplash.com/photo-1484154218962-a197022b5858",
+    },
+    {
+      id: 6,
+      name: "Sports",
+      image_url: "https://images.unsplash.com/photo-1517649763962-0c623066013b",
+    },
+    {
+      id: 7,
+      name: "Mobile & Gadgets",
+      image_url: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
+    },
+    {
+      id: 8,
+      name: "Books",
+      image_url: "https://images.unsplash.com/photo-1512820790803-83ca734da794",
+    },
+  ];
+
   return (
     <View className="flex-1">
       <AppBar title="Wafi Ecommerce" />
@@ -141,16 +185,64 @@ export const HomeScreen = () => {
         <Carousel></Carousel>
 
         <View className="mt-sm">
-          <View className="flex-row">
-            <AppButton
-              title="Categories"
-              onPress={() => {}}
-              variant="outline"
-              className="flex-1"
-            />
-            <View style={{ width: Sizes.md }} />
-            <AppButton title="Deals" onPress={() => {}} className="flex-1" />
-          </View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingHorizontal: Sizes.md,
+              alignItems: "center",
+              gap: 10,
+            }}
+          >
+            {categories.map((category) => (
+              <LiquidGlass
+                key={category.id}
+                borderRadius={Sizes.radiusFull}
+                onPress={() => {}}
+                style={{ height: 56 }} // ← was 44
+                pressable
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingHorizontal: 18, // ← was 14
+                    paddingVertical: 14, // ← was 10
+                    gap: 10, // ← was 8
+                  }}
+                >
+                  {/* Icon badge */}
+                  <View
+                    style={{
+                      width: 34, // ← was 26
+                      height: 34, // ← was 26
+                      borderRadius: 17, // ← was 13
+                      overflow: "hidden",
+                      borderWidth: 1,
+                      borderColor: "rgba(255,255,255,0.6)",
+                    }}
+                  >
+                    <Image
+                      source={{ uri: category.image_url }}
+                      style={{ width: 30, height: 30, resizeMode: "cover" }}
+                    />
+                  </View>
+
+                  {/* Label */}
+                  <Text
+                    style={{
+                      fontSize: 15, // ← was 13
+                      fontWeight: "600",
+                      color: Colors.textPrimary,
+                      letterSpacing: 0.2,
+                    }}
+                  >
+                    {category.name}
+                  </Text>
+                </View>
+              </LiquidGlass>
+            ))}
+          </ScrollView>
         </View>
 
         <Text className="text-[24px] font-[800] text-text-primary mb-md mt-lg">
@@ -162,8 +254,7 @@ export const HomeScreen = () => {
               <LiquidGlass
                 className="overflow-hidden"
                 borderRadius={Sizes.radiusMd}
-                pressable={true}
-                onPress={() => {}}
+                pressable={false}
               >
                 <View className="relative">
                   <View className="h-[160px] w-full bg-primary/5 items-center justify-center">
@@ -203,7 +294,7 @@ export const HomeScreen = () => {
 
                 <View className="p-sm">
                   <Text
-                    className="text-xs font-bold text-text-primary h-[32px]"
+                    className="text-sm font-bold text-text-primary "
                     numberOfLines={2}
                   >
                     {item.title}
@@ -221,6 +312,16 @@ export const HomeScreen = () => {
                       )}
                     </View>
                   </View>
+
+                  <TouchableOpacity
+                    className="mt-sm bg-primary py-2 rounded-lg items-center justify-center shadow-sm"
+                    onPress={() => {}}
+                    activeOpacity={1}
+                  >
+                    <Text className="text-white text-xs font-bold">
+                      Add to Cart
+                    </Text>
+                  </TouchableOpacity>
                 </View>
               </LiquidGlass>
             </View>

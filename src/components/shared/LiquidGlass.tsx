@@ -1,14 +1,14 @@
 // src/shared/components/LiquidGlass.tsx
-import { Colors } from '@/constants/colors';
-import { BlurView } from 'expo-blur';
-import React, { useRef } from 'react';
+import { Colors } from "@/constants/colors";
+import { BlurView } from "expo-blur";
+import React, { useRef } from "react";
 import {
   Animated,
   Pressable,
   PressableProps,
   View,
   ViewStyle,
-} from 'react-native';
+} from "react-native";
 
 export interface LiquidGlassProps extends PressableProps {
   children: React.ReactNode;
@@ -24,7 +24,7 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
   style,
   className,
   borderRadius = 24,
-  blurIntensity = 80,           // ← raised from 22 → 80 (near-max on 0–100 scale)
+  blurIntensity = 80, // ← raised from 22 → 80 (near-max on 0–100 scale)
   pressable = true,
   onPress,
   ...rest
@@ -68,7 +68,7 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
 
   const inner = (
     <Animated.View
-      className={`overflow-hidden bg-transparent ${className || ''}`}
+      className={`overflow-hidden bg-transparent ${className || ""}`}
       style={[
         {
           borderRadius,
@@ -84,16 +84,16 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
     >
       {/* Layer 1a — Primary heavy blur (most of the frosting work) */}
       <BlurView
-        intensity={blurIntensity}          // up to 100
+        intensity={blurIntensity} // up to 100
         tint="light"
-        experimentalBlurMethod="dimezisBlurView"  // ← stronger blur engine on Android
+        experimentalBlurMethod="dimezisBlurView" // ← stronger blur engine on Android
         className="absolute inset-0"
         style={{ borderRadius }}
       />
 
       {/* Layer 1b — Second blur pass for extra depth */}
       <BlurView
-        intensity={Math.round(blurIntensity * 0.5)}  // secondary pass at half intensity
+        intensity={Math.round(blurIntensity * 0.5)} // secondary pass at half intensity
         tint="light"
         experimentalBlurMethod="dimezisBlurView"
         className="absolute inset-0"
@@ -115,15 +115,15 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
       {/* Ripple Layer */}
       <Animated.View
         style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
+          position: "absolute",
+          top: "50%",
+          left: "50%",
           width: 200,
           height: 200,
           marginLeft: -100,
           marginTop: -100,
           borderRadius: 100,
-          backgroundColor: 'white',
+          backgroundColor: "white",
           opacity: rippleOpacity,
           transform: [{ scale: rippleScale }],
           zIndex: 1,
@@ -131,14 +131,19 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
       />
 
       {/* Layer 4 — Content */}
-      <View className="flex-1 relative z-[3]">{children}</View>
+      <View className="flex-1 relative z-[3] justify-center ">{children}</View>
     </Animated.View>
   );
 
   if (!pressable || !onPress) return inner;
 
   return (
-    <Pressable onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut} {...rest}>
+    <Pressable
+      onPress={onPress}
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
+      {...rest}
+    >
       {inner}
     </Pressable>
   );
