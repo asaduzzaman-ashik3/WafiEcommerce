@@ -7,7 +7,7 @@ export const HomeService = {
     try {
       console.log("Inside service...");
 
-      const { data, error } = await supabase.from("bannersa").select("*");
+      const { data, error } = await supabase.from("banner").select("*");
 
       if (error) {
         throw error;
