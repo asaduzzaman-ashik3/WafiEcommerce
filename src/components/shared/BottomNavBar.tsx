@@ -80,26 +80,16 @@ const TabItem = ({
         {/* Focused Background Layer */}
         {isFocused && (
           <View
-            className="absolute inset-0"
-            style={{ backgroundColor: "rgba(58, 107, 42, 0.12)" }}
+            className="absolute inset-0 bg-red"
+            style={{ backgroundColor: Colors.primary }}
           />
         )}
 
-        {/* Ripple Effect Layer */}
-        <Animated.View
-          style={{
-            position: "absolute",
-            width: 42,
-            height: 42,
-            borderRadius: 21,
-            backgroundColor: "white",
-            opacity: rippleOpacity,
-            transform: [{ scale: rippleScale }],
-          }}
-        />
-
         <View className="w-full h-full items-center justify-center rounded-full">
-          {getIcon(route, isFocused ? Colors.primary : Colors.textSecondary)}
+          {getIcon(
+            route,
+            isFocused ? Colors.primaryPale : Colors.textSecondary,
+          )}
         </View>
       </Animated.View>
       <Text
