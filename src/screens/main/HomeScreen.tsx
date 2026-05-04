@@ -9,10 +9,13 @@ import { HomeService } from "@/services/home_service";
 import { Banner } from "@/types/banner_types";
 import React, { useEffect, useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { BookCategory } from "@/types/book_category";
 
 export const HomeScreen = () => {
   const [banners, setBanners] = useState<Banner[]>([]);
   const [loadingBanners, setLoadingBanners] = useState(true);
+  const [categories, setCategories] = useState<BookCategory[]>([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
 
   const products = [
     {
@@ -138,73 +141,28 @@ export const HomeScreen = () => {
     },
   ];
 
-  const categories = [
-    {
-      id: 1,
-      name: "Electronics",
-      image_url:
-        "https://backoffice.ghorerbazar.com/banner/o1uH11775363016-light.jpg",
-    },
-    {
-      id: 2,
-      name: "Fashion",
-      image_url: "https://images.unsplash.com/photo-1521334884684-d80222895322",
-    },
-    {
-      id: 3,
-      name: "Groceries",
-      image_url: "https://images.unsplash.com/photo-1542838132-92c53300491e",
-    },
-    {
-      id: 4,
-      name: "Beauty & Health",
-      image_url: "https://images.unsplash.com/photo-1596462502278-27bfdc403348",
-    },
-    {
-      id: 5,
-      name: "Home Decor",
-      image_url: "https://images.unsplash.com/photo-1484154218962-a197022b5858",
-    },
-    {
-      id: 6,
-      name: "Sports",
-      image_url: "https://images.unsplash.com/photo-1517649763962-0c623066013b",
-    },
-    {
-      id: 7,
-      name: "Mobile & Gadgets",
-      image_url: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
-    },
-    {
-      id: 8,
-      name: "Books",
-      image_url: "https://images.unsplash.com/photo-1512820790803-83ca734da794",
-    },
-  ];
-
   useEffect(() => {
-    console.log("TEST LOG");
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_KEY;
-    console.log("SUPABASE URL:", supabaseUrl);
-    console.log("SUPABASE KEY:", supabaseKey);
-
-    const loadBanner = async () => {
+    const loadHomeData = async () => {
       try {
         setLoadingBanners(true);
-        console.log("Calling API...");
-        const data = await HomeService.getBanners();
-        setBanners(data);
-        console.log("API RESPONSE:", data);
+        setLoadingCategories(true);
+
+        const [banners, categories] = await Promise.all([
+          HomeService.getBanners(),
+          HomeService.getCategories(),
+        ]);
+
+        setBanners(banners);
+        setCategories(categories);
       } catch (err) {
-        console.log("ERROR OCCURRED:");
         console.log(err);
       } finally {
         setLoadingBanners(false);
+        setLoadingCategories(false);
       }
     };
 
-    loadBanner();
+    loadHomeData();
   }, []);
 
   return (
