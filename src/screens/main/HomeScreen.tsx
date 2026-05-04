@@ -1,5 +1,6 @@
 import { AppBar } from "@/components/shared/AppBar";
 import { Carousel } from "@/components/shared/Carousel";
+import { BannerSkeleton } from "@/components/ui/skeleton/BannerSkeleton";
 import { LiquidGlass } from "@/components/shared/LiquidGlass";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/colors";
@@ -11,6 +12,7 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export const HomeScreen = () => {
   const [banners, setBanners] = useState<Banner[]>([]);
+  const [loadingBanners, setLoadingBanners] = useState(true);
 
   const products = [
     {
@@ -189,6 +191,7 @@ export const HomeScreen = () => {
 
     const loadBanner = async () => {
       try {
+        setLoadingBanners(true);
         console.log("Calling API...");
         const data = await HomeService.getBanners();
         setBanners(data);
@@ -196,6 +199,8 @@ export const HomeScreen = () => {
       } catch (err) {
         console.log("ERROR OCCURRED:");
         console.log(err);
+      } finally {
+        setLoadingBanners(false);
       }
     };
 
@@ -207,7 +212,11 @@ export const HomeScreen = () => {
       <AppBar title="Wafi Ecommerce" />
 
       <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
-        <Carousel data={banners}></Carousel>
+        {loadingBanners ? (
+          <BannerSkeleton />
+        ) : (
+          <Carousel data={banners}></Carousel>
+        )}
 
         <View className="mt-sm">
           <ScrollView
