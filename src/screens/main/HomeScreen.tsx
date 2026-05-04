@@ -1,16 +1,17 @@
 import { AppBar } from "@/components/shared/AppBar";
 import { Carousel } from "@/components/shared/Carousel";
-import { BannerSkeleton } from "@/components/ui/skeleton/BannerSkeleton";
-import { CategoriesSkeleton } from "@/components/ui/skeleton/Categories_skeleton";
 import { LiquidGlass } from "@/components/shared/LiquidGlass";
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { BannerSkeleton } from "@/components/ui/skeleton/BannerSkeleton";
+import { CategoriesSkeleton } from "@/components/ui/skeleton/Categories_skeleton";
 import { Colors } from "@/constants/colors";
 import { Sizes } from "@/constants/sizes";
 import { HomeService } from "@/services/home_service";
 import { Banner } from "@/types/banner_types";
+import { BookCategory } from "@/types/book_category";
 import React, { useEffect, useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { BookCategory } from "@/types/book_category";
+import Toast from "react-native-toast-message";
 
 export const HomeScreen = () => {
   const [banners, setBanners] = useState<Banner[]>([]);
@@ -148,17 +149,30 @@ export const HomeScreen = () => {
         setLoadingBanners(true);
         setLoadingCategories(true);
 
-        const [banners, categories] = await Promise.all([
-          HomeService.getBanners(),
-          HomeService.getCategories(),
-        ]);
+        const bannerPromise = HomeService.getBanners();
 
+        const banners = await bannerPromise;
         setBanners(banners);
-        setCategories(categories);
       } catch (err) {
-        console.log(err);
+        Toast.show({
+          type: "error",
+          text1: "Banners Error",
+          text2: err?.message || "Failed to load banners",
+        });
       } finally {
         setLoadingBanners(false);
+      }
+
+      try {
+        const categories = await HomeService.getCategories();
+        setCategories(categories);
+      } catch (err) {
+        Toast.show({
+          type: "error",
+          text1: "Categories Error",
+          text2: err?.message || "Failed to load categories",
+        });
+      } finally {
         setLoadingCategories(false);
       }
     };

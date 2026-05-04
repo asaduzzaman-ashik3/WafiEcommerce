@@ -3,7 +3,8 @@ import { View, Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Colors } from "@/constants/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { BlurView } from "expo-blur";
+import Toast from "react-native-toast-message";
+import ToastConfig from "@/config/toast-config";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -52,6 +53,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       <SafeAreaView className="flex-1" edges={["right", "left"]}>
         {children}
       </SafeAreaView>
+      <Toast config={ToastConfig} />
     </View>
   );
 };
