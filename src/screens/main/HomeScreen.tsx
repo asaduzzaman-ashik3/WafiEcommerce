@@ -1,6 +1,7 @@
 import { AppBar } from "@/components/shared/AppBar";
 import { Carousel } from "@/components/shared/Carousel";
 import { BannerSkeleton } from "@/components/ui/skeleton/BannerSkeleton";
+import { CategoriesSkeleton } from "@/components/ui/skeleton/Categories_skeleton";
 import { LiquidGlass } from "@/components/shared/LiquidGlass";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/colors";
@@ -176,66 +177,70 @@ export const HomeScreen = () => {
           <Carousel data={banners}></Carousel>
         )}
 
-        <View className="mt-sm">
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingHorizontal: Sizes.md,
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            {categories.map((category) => (
-              <LiquidGlass
-                key={category.id}
-                borderRadius={Sizes.radiusFull}
-                onPress={() => {}}
-                style={{ height: 50 }} // ← was 44
-                pressable
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    paddingHorizontal: 18, // ← was 14
-                    paddingVertical: 14, // ← was 10
-                    gap: 10, // ← was 8
-                  }}
+        {loadingCategories ? (
+          <CategoriesSkeleton />
+        ) : (
+          <View className="mt-sm">
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingHorizontal: Sizes.md,
+                alignItems: "center",
+                gap: 10,
+              }}
+            >
+              {categories.map((category) => (
+                <LiquidGlass
+                  key={category.id}
+                  borderRadius={Sizes.radiusFull}
+                  onPress={() => {}}
+                  style={{ height: 50 }} // ← was 44
+                  pressable
                 >
-                  {/* Icon badge */}
                   <View
                     style={{
-                      width: 30, // ← was 26
-                      height: 30, // ← was 26
-                      borderRadius: 17, // ← was 13
-                      overflow: "hidden",
-                      borderWidth: 1,
-                      borderColor: "rgba(255,255,255,0.6)",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      paddingHorizontal: 18, // ← was 14
+                      paddingVertical: 14, // ← was 10
+                      gap: 10, // ← was 8
                     }}
                   >
-                    <Image
-                      source={{ uri: category.image_url }}
-                      style={{ width: 30, height: 30, resizeMode: "cover" }}
-                    />
-                  </View>
+                    {/* Icon badge */}
+                    <View
+                      style={{
+                        width: 30, // ← was 26
+                        height: 30, // ← was 26
+                        borderRadius: 17, // ← was 13
+                        overflow: "hidden",
+                        borderWidth: 1,
+                        borderColor: "rgba(255,255,255,0.6)",
+                      }}
+                    >
+                      <Image
+                        source={{ uri: category.image_url }}
+                        style={{ width: 30, height: 30, resizeMode: "cover" }}
+                      />
+                    </View>
 
-                  {/* Label */}
-                  <Text
-                    style={{
-                      fontSize: 14, // ← was 13
-                      fontWeight: "600",
-                      color: Colors.textPrimary,
-                      letterSpacing: 0.2,
-                    }}
-                  >
-                    {category.name}
-                  </Text>
-                </View>
-              </LiquidGlass>
-            ))}
-          </ScrollView>
-        </View>
+                    {/* Label */}
+                    <Text
+                      style={{
+                        fontSize: 14, // ← was 13
+                        fontWeight: "600",
+                        color: Colors.textPrimary,
+                        letterSpacing: 0.2,
+                      }}
+                    >
+                      {category.name}
+                    </Text>
+                  </View>
+                </LiquidGlass>
+              ))}
+            </ScrollView>
+          </View>
+        )}
 
         <Text className="text-[24px] font-[800] text-text-primary mb-md mt-lg">
           Recent Items
