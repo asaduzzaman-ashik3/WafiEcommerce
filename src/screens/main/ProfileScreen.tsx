@@ -34,7 +34,7 @@ export const ProfileScreen = () => {
                   onPress={() => setThemeMode(option.value)}
                   className="flex-row items-center justify-between p-sm rounded-xl"
                   style={{
-                    backgroundColor: themeMode === option.value ? colors.primary + '15' : 'transparent',
+                    backgroundColor: themeMode === option.value ? colors.primary + '25' : 'transparent',
                   }}
                 >
                   <View className="flex-row items-center gap-md">

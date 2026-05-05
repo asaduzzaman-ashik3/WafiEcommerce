@@ -89,7 +89,7 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
         style={{
           borderRadius,
           backgroundColor: colors.glassBg,
-          opacity: 0.5, // Further reduced from 1.0 to make it more transparent
+          opacity: 1, 
           zIndex: -2,
         }}
       />
@@ -97,15 +97,20 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
       {/* Layer 2 — Blur pass */}
       <BlurView
         intensity={blurIntensity}
-        tint="light"
+        tint={colors.isDark ? "dark" : "light"}
         className="absolute inset-0"
         style={{ borderRadius, zIndex: -1 }}
       />
 
       {/* Layer 3 — Shine border */}
       <View
-        className="absolute inset-0 border-[1px] border-t-white/40 border-l-white/30 border-r-white/10 border-b-white/10"
-        style={{ borderRadius }}
+        className="absolute inset-0 border-[0.5px]"
+        style={{ 
+          borderRadius,
+          borderColor: colors.glassBorder,
+          borderTopColor: colors.isDark ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.6)',
+          borderLeftColor: colors.isDark ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.4)',
+        }}
       />
 
       {/* Ripple Layer */}
