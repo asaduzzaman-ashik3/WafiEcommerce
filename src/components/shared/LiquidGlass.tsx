@@ -24,7 +24,7 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
   style,
   className,
   borderRadius = 24,
-  blurIntensity = 80, // ← raised from 22 → 80 (near-max on 0–100 scale)
+  blurIntensity = 30, // Reduced from 40 for a lighter glass effect
   pressable = true,
   onPress,
   ...rest
@@ -82,33 +82,28 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
         style,
       ]}
     >
-      {/* Layer 1a — Primary heavy blur (most of the frosting work) */}
-      <BlurView
-        intensity={blurIntensity} // up to 100
-        tint="light"
-        experimentalBlurMethod="dimezisBlurView" // ← stronger blur engine on Android
-        className="absolute inset-0"
-        style={{ borderRadius }}
-      />
-
-      {/* Layer 1b — Second blur pass for extra depth */}
-      <BlurView
-        intensity={Math.round(blurIntensity * 0.1)} // secondary pass at half intensity
-        tint="light"
-        experimentalBlurMethod="dimezisBlurView"
-        className="absolute inset-0"
-        style={{ borderRadius }}
-      />
-
-      {/* Layer 2 — Tint removed for transparency */}
+      {/* Layer 1 — Tint & Background */}
       <View
-        className="absolute inset-0 bg-transparent"
-        style={{ borderRadius }}
+        className="absolute inset-0"
+        style={{
+          borderRadius,
+          backgroundColor: Colors.glassBg,
+          opacity: 0.5, // Further reduced from 1.0 to make it more transparent
+          zIndex: -2,
+        }}
+      />
+
+      {/* Layer 2 — Blur pass */}
+      <BlurView
+        intensity={blurIntensity}
+        tint="light"
+        className="absolute inset-0"
+        style={{ borderRadius, zIndex: -1 }}
       />
 
       {/* Layer 3 — Shine border */}
       <View
-        className="absolute inset-0 border-[1.5px] border-t-white/80 border-l-white/60 border-r-white/20 border-b-white/20 bg-transparent"
+        className="absolute inset-0 border-[1px] border-t-white/40 border-l-white/30 border-r-white/10 border-b-white/10"
         style={{ borderRadius }}
       />
 

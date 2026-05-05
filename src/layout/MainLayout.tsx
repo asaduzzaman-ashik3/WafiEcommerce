@@ -1,10 +1,10 @@
-import React from "react";
-import { View, Dimensions } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import ToastConfig from "@/config/toast-config";
 import { Colors } from "@/constants/colors";
+import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
+import { Dimensions, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
-import ToastConfig from "@/config/toast-config";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -34,19 +34,6 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           height: width * 0.7,
           backgroundColor: Colors.glowSage,
           opacity: 0.2,
-        }}
-      />
-
-      {/* Warm amber glow */}
-      <View
-        className="absolute rounded-full"
-        style={{
-          bottom: -height * 0.1,
-          right: -width * 0.2,
-          width: width * 0.8,
-          height: width * 0.8,
-          backgroundColor: Colors.glowAmber,
-          opacity: 0.15,
         }}
       />
 

@@ -63,7 +63,7 @@ const TabItem = ({
           <LiquidGlass
             borderRadius={100}
             className=" items-center justify-center"
-            blurIntensity={900}
+            blurIntensity={20}
             pressable={false}
             style={{ height: 62, width: 75 }}
           >
@@ -103,12 +103,12 @@ export const BottomNavBar: React.FC<BottomTabBarProps> = ({
       style={{ paddingBottom: insets.bottom + Sizes.sm }}
     >
       <LiquidGlass
-        borderRadius={67}
-        className="h-[70px]"
-        blurIntensity={40}
+        borderRadius={100}
+        className="h-[78px]"
+        blurIntensity={15}
         pressable={false}
       >
-        <View className="flex-1 flex-row items-center justify-around px-2">
+        <View className="flex-1 flex-row items-center justify-around">
           {state.routes.map((route, index) => {
             const { options } = descriptors[route.key];
             const label =
