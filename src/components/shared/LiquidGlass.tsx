@@ -93,7 +93,7 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
 
       {/* Layer 1b — Second blur pass for extra depth */}
       <BlurView
-        intensity={Math.round(blurIntensity * 0.5)} // secondary pass at half intensity
+        intensity={Math.round(blurIntensity * 0.1)} // secondary pass at half intensity
         tint="light"
         experimentalBlurMethod="dimezisBlurView"
         className="absolute inset-0"
