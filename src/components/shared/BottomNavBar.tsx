@@ -1,11 +1,11 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Sizes } from "@/constants/sizes";
+import { useTheme } from "@/context/ThemeContext";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import React, { useRef } from "react";
 import { Animated, Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LiquidGlass } from "./LiquidGlass";
-import { useTheme } from "@/context/ThemeContext";
 
 const TabItem = ({
   label,
@@ -81,10 +81,10 @@ const TabItem = ({
           </LiquidGlass>
         ) : (
           <View className="items-center justify-center">
-            {getIcon(route, colors.textMuted)}
-            <Text 
+            {getIcon(route, colors.textSecondary)}
+            <Text
               className="text-[10px] mt-1 font-medium"
-              style={{ color: colors.textMuted }}
+              style={{ color: colors.textSecondary }}
             >
               {label}
             </Text>
