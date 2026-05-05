@@ -11,7 +11,14 @@ import { Banner } from "@/types/banner_types";
 import { BookCategory } from "@/types/book_category";
 import { Product } from "@/types/product";
 import React, { useEffect, useState } from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
+import {
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import Toast from "react-native-toast-message";
 
 export const HomeScreen = () => {
@@ -208,14 +215,6 @@ export const HomeScreen = () => {
                     <View className="absolute top-2 left-2 bg-secondary px-2 py-1 rounded-full">
                       <Text className="text-[10px] font-bold text-white">
                         {item.discount_tag}
-                      </Text>
-                    </View>
-                  )}
-
-                  {item.label_tag && (
-                    <View className="absolute top-2 right-2 bg-primary/80 px-2 py-1 rounded-full">
-                      <Text className="text-[10px] font-bold text-white">
-                        {item.label_tag}
                       </Text>
                     </View>
                   )}
