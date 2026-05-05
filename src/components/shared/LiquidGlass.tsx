@@ -1,4 +1,5 @@
 // src/shared/components/LiquidGlass.tsx
+import { useTheme } from "@/context/ThemeContext";
 import { BlurView } from "expo-blur";
 import React, { useRef } from "react";
 import {
@@ -8,7 +9,6 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { useTheme } from "@/context/ThemeContext";
 
 export interface LiquidGlassProps extends PressableProps {
   children: React.ReactNode;

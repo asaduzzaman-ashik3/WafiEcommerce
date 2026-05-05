@@ -1,12 +1,12 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Sizes } from "@/constants/sizes";
+import { useTheme } from "@/context/ThemeContext";
 import { DrawerActions } from "@react-navigation/native";
 import { useNavigation } from "expo-router";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LiquidGlass } from "./LiquidGlass";
-import { useTheme } from "@/context/ThemeContext";
 
 interface AppBarProps {
   title: string;
@@ -34,69 +34,83 @@ export const AppBar: React.FC<AppBarProps> = ({
   };
 
   return (
-    <View 
-      className="absolute top-0 left-0 right-0 z-50 px-md pb-sm" 
+    <View
+      className="absolute top-0 left-0 right-0 z-50 px-md"
       style={{ paddingTop: insets.top }}
     >
-      <LiquidGlass
-        borderRadius={Sizes.radiusMd}
-        className="h-app-bar"
-        pressable={false}
-        blurIntensity={20}
-      >
-        <View className="flex-1 flex-row items-center px-md">
-          {/* Left */}
-          <View className="w-11 items-start justify-center">
+      <View className="h-[64px] flex-row items-center justify-between">
+        {/* Left Section - Drawer/Back Toggle */}
+        <LiquidGlass
+          borderRadius={Sizes.radiusFull}
+          style={{ width: 44, height: 44 }}
+          pressable
+          onPress={showBack ? onBackPress : handleDrawerToggle}
+        >
+          <View className="flex-1 items-center justify-center">
             {showBack ? (
-              <TouchableOpacity onPress={onBackPress}>
-                <IconSymbol
-                  name="chevron.left"
-                  size={24}
-                  color={colors.textPrimary}
-                />
-              </TouchableOpacity>
+              <IconSymbol
+                name="chevron.left"
+                size={22}
+                color={colors.textPrimary}
+              />
             ) : (
-              <TouchableOpacity onPress={handleDrawerToggle}>
-                <IconSymbol
-                  name="line.3.horizontal"
-                  size={24}
-                  color={colors.primary}
-                />
-              </TouchableOpacity>
+              <IconSymbol
+                name="line.3.horizontal"
+                size={22}
+                color={colors.primary}
+              />
             )}
           </View>
+        </LiquidGlass>
 
-          {/* Center */}
+        {/* Center Section - Title Container */}
+        <LiquidGlass
+          borderRadius={Sizes.radiusMd}
+          style={{ height: 44, paddingHorizontal: 20 }}
+          pressable={false}
+        >
           <View className="flex-1 items-center justify-center">
-            <Text 
-              className="text-[16px] font-bold" 
+            <Text
+              className="text-base font-medium tracking-tight "
               style={{ color: colors.primary }}
             >
               {title}
             </Text>
           </View>
+        </LiquidGlass>
 
-          {/* Right */}
-          <View className="w-11 items-end justify-center">
-            {rightElement ?? (
-              <TouchableOpacity
-                onPress={onNotificationPress}
-                activeOpacity={0.7}
-                className="w-9 h-9 items-center justify-center"
-              >
-                <IconSymbol name="bell.fill" size={22} color={colors.primary} />
-                {notificationCount > 0 && (
-                  <View className="absolute top-0 right-0 min-w-[14px] h-[14px] bg-red-500 rounded-full items-center justify-center px-[3px]">
-                    <Text className="text-[9px] font-bold text-white">
-                      {notificationCount > 99 ? "99+" : notificationCount}
-                    </Text>
-                  </View>
-                )}
-              </TouchableOpacity>
-            )}
+        {/* Right Section - Notifications/Actions */}
+        <LiquidGlass
+          borderRadius={Sizes.radiusFull}
+          style={{ height: 44, paddingHorizontal: 12 }}
+          pressable={false}
+        >
+          <View className="flex-row items-center gap-4">
+            {/* Cart Icon */}
+            <TouchableOpacity
+              onPress={() => navigation.navigate("cart" as any)}
+            >
+              <IconSymbol name="cart.fill" size={20} color={colors.primary} />
+            </TouchableOpacity>
+
+            {/* Notification Icon */}
+            <TouchableOpacity
+              onPress={onNotificationPress}
+              activeOpacity={0.7}
+              className="relative"
+            >
+              <IconSymbol name="bell.fill" size={20} color={colors.primary} />
+              {notificationCount > 0 && (
+                <View className="absolute -top-1 -right-1 min-w-[14px] h-[14px] bg-red-500 rounded-full items-center justify-center px-[3px] border-[1.5px] border-white/20">
+                  <Text className="text-[8px] font-bold text-white">
+                    {notificationCount > 99 ? "99+" : notificationCount}
+                  </Text>
+                </View>
+              )}
+            </TouchableOpacity>
           </View>
-        </View>
-      </LiquidGlass>
+        </LiquidGlass>
+      </View>
     </View>
   );
 };
