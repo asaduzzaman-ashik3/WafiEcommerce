@@ -33,16 +33,19 @@ export const AppDrawer: React.FC<DrawerContentComponentProps> = (props) => {
         scrollEnabled={false}
         contentContainerStyle={{ paddingTop: 0 }}
       >
-        <View style={{ paddingTop: insets.top + Sizes.md }} className="px-md pb-xl">
+        <View
+          style={{ paddingTop: insets.top + Sizes.md }}
+          className="px-md pb-xl"
+        >
           <LiquidGlass
             borderRadius={20}
             className="p-md mb-xl"
             pressable={false}
           >
             <View className="flex-row items-center">
-              <View 
+              <View
                 className="w-14 h-14 rounded-full items-center justify-center mr-md"
-                style={{ backgroundColor: colors.primary + '20' }}
+                style={{ backgroundColor: colors.primary + "20" }}
               >
                 <IconSymbol
                   name="person.fill"
@@ -51,13 +54,13 @@ export const AppDrawer: React.FC<DrawerContentComponentProps> = (props) => {
                 />
               </View>
               <View>
-                <Text 
+                <Text
                   className="text-lg font-bold"
                   style={{ color: colors.textPrimary }}
                 >
                   Wafi User
                 </Text>
-                <Text 
+                <Text
                   className="text-xs"
                   style={{ color: colors.textSecondary }}
                 >
@@ -74,9 +77,13 @@ export const AppDrawer: React.FC<DrawerContentComponentProps> = (props) => {
                 className="flex-row items-center p-md rounded-xl"
                 onPress={() => props.navigation.navigate(item.route as any)}
               >
-                <View 
+                <View
                   className="w-10 h-10 rounded-full items-center justify-center mr-md"
-                  style={{ backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }}
+                  style={{
+                    backgroundColor: isDark
+                      ? "rgba(255,255,255,0.05)"
+                      : "rgba(0,0,0,0.05)",
+                  }}
                 >
                   <IconSymbol
                     name={item.icon as any}
@@ -84,7 +91,7 @@ export const AppDrawer: React.FC<DrawerContentComponentProps> = (props) => {
                     color={colors.primary}
                   />
                 </View>
-                <Text 
+                <Text
                   className="text-base font-semibold"
                   style={{ color: colors.textPrimary }}
                 >
@@ -101,16 +108,16 @@ export const AppDrawer: React.FC<DrawerContentComponentProps> = (props) => {
         style={{ paddingBottom: insets.bottom + Sizes.lg }}
         className="px-lg"
       >
-        <TouchableOpacity 
+        <TouchableOpacity
           className="flex-row items-center p-md rounded-xl"
-          style={{ backgroundColor: colors.error + '15' }}
+          style={{ backgroundColor: colors.error + "15" }}
         >
           <IconSymbol
             name="arrow.left.square.fill"
             size={20}
             color={colors.error}
           />
-          <Text 
+          <Text
             className="ml-md text-base font-bold"
             style={{ color: colors.error }}
           >

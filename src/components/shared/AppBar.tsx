@@ -2,7 +2,7 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Sizes } from "@/constants/sizes";
 import { useTheme } from "@/context/ThemeContext";
 import { DrawerActions } from "@react-navigation/native";
-import { useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -88,7 +88,7 @@ export const AppBar: React.FC<AppBarProps> = ({
           <View className="flex-row items-center gap-4">
             {/* Cart Icon */}
             <TouchableOpacity
-              onPress={() => navigation.navigate("cart" as any)}
+              onPress={() => router.push("/orders")}
             >
               <IconSymbol name="cart.fill" size={20} color={colors.primary} />
             </TouchableOpacity>
