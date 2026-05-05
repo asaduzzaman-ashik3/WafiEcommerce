@@ -34,11 +34,15 @@ export const AppBar: React.FC<AppBarProps> = ({
   };
 
   return (
-    <View className="px-md pb-sm" style={{ paddingTop: insets.top }}>
+    <View 
+      className="absolute top-0 left-0 right-0 z-50 px-md pb-sm" 
+      style={{ paddingTop: insets.top }}
+    >
       <LiquidGlass
         borderRadius={Sizes.radiusMd}
         className="h-app-bar"
         pressable={false}
+        blurIntensity={20}
       >
         <View className="flex-1 flex-row items-center px-md">
           {/* Left */}

@@ -1,10 +1,10 @@
 import ToastConfig from "@/config/toast-config";
+import { useTheme } from "@/context/ThemeContext";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { Dimensions, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
-import { useTheme } from "@/context/ThemeContext";
 
 interface MainLayoutProps {
   children: React.ReactNode;

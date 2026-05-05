@@ -89,7 +89,7 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
         style={{
           borderRadius,
           backgroundColor: colors.glassBg,
-          opacity: 1, 
+          opacity: 1,
           zIndex: -2,
         }}
       />
@@ -105,11 +105,15 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
       {/* Layer 3 — Shine border */}
       <View
         className="absolute inset-0 border-[0.5px]"
-        style={{ 
+        style={{
           borderRadius,
           borderColor: colors.glassBorder,
-          borderTopColor: colors.isDark ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.6)',
-          borderLeftColor: colors.isDark ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.4)',
+          borderTopColor: colors.isDark
+            ? "rgba(255,255,255,0.4)"
+            : "rgba(255,255,255,0.6)",
+          borderLeftColor: colors.isDark
+            ? "rgba(255,255,255,0.3)"
+            : "rgba(255,255,255,0.4)",
         }}
       />
 

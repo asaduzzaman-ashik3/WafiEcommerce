@@ -1,11 +1,11 @@
 import { AppBar } from "@/components/shared/AppBar";
+import { ProductCard } from "@/components/shared/cards/product_card";
 import { Carousel } from "@/components/shared/Carousel";
 import { LiquidGlass } from "@/components/shared/LiquidGlass";
-import { IconSymbol } from "@/components/ui/icon-symbol";
 import { BannerSkeleton } from "@/components/ui/skeleton/BannerSkeleton";
 import { CategoriesSkeleton } from "@/components/ui/skeleton/Categories_skeleton";
-import { ProductCard } from "@/components/shared/cards/product_card";
 import { Sizes } from "@/constants/sizes";
+import { useTheme } from "@/context/ThemeContext";
 import { HomeService } from "@/services/home_service";
 import { Banner } from "@/types/banner_types";
 import { BookCategory } from "@/types/book_category";
@@ -16,12 +16,10 @@ import {
   Image,
   ScrollView,
   Text,
-  TouchableOpacity,
   View,
   useWindowDimensions,
 } from "react-native";
 import Toast from "react-native-toast-message";
-import { useTheme } from "@/context/ThemeContext";
 
 export const HomeScreen = () => {
   const [banners, setBanners] = useState<Banner[]>([]);
@@ -36,7 +34,7 @@ export const HomeScreen = () => {
   const { colors } = useTheme();
 
   const { width: windowWidth } = useWindowDimensions();
-  const cardWidth = (windowWidth - 48) / 2;
+  const cardWidth = (windowWidth - 43) / 2;
 
   useEffect(() => {
     const loadHomeData = async () => {
@@ -75,12 +73,13 @@ export const HomeScreen = () => {
       const loadProducts = async () => {
         try {
           setLoadingProducts(true);
-          const [newArrivals, bestsellers, topRated, discounts] = await Promise.all([
-            HomeService.getNewArrivalsProducts(),
-            HomeService.getBestsellerProducts(),
-            HomeService.getTopRatedProducts(),
-            HomeService.getDiscountedProducts(),
-          ]);
+          const [newArrivals, bestsellers, topRated, discounts] =
+            await Promise.all([
+              HomeService.getNewArrivalsProducts(),
+              HomeService.getBestsellerProducts(),
+              HomeService.getTopRatedProducts(),
+              HomeService.getDiscountedProducts(),
+            ]);
           setProducts(newArrivals);
           setBestsellerProducts(bestsellers);
           setTopRatedProducts(topRated);
@@ -108,7 +107,14 @@ export const HomeScreen = () => {
     <View className="flex-1">
       <AppBar title="Wafi Ecommerce" />
 
-      <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
+      <ScrollView
+        className="flex-1 px-4"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingTop: 110, // appBarHeight + small margin
+          paddingBottom: 20,
+        }}
+      >
         {loadingBanners ? (
           <BannerSkeleton />
         ) : (
@@ -181,7 +187,10 @@ export const HomeScreen = () => {
         {loadingProducts ? (
           <View className="py-20 items-center justify-center">
             <ActivityIndicator size="large" color={colors.primary} />
-            <Text className="mt-2 text-xs" style={{ color: colors.textSecondary }}>
+            <Text
+              className="mt-2 text-xs"
+              style={{ color: colors.textSecondary }}
+            >
               Loading products...
             </Text>
           </View>

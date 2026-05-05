@@ -1,9 +1,9 @@
 import { AppBar } from "@/components/shared/AppBar";
 import { LiquidGlass } from "@/components/shared/LiquidGlass";
 import { Sizes } from "@/constants/sizes";
+import { useTheme } from "@/context/ThemeContext";
 import React from "react";
 import { ScrollView, Text, View } from "react-native";
-import { useTheme } from "@/context/ThemeContext";
 
 export const OrdersScreen = () => {
   const { colors } = useTheme();
@@ -26,7 +26,13 @@ export const OrdersScreen = () => {
   return (
     <View className="flex-1">
       <AppBar title="My Orders" />
-      <ScrollView contentContainerStyle={{ padding: 16 }}>
+      <ScrollView
+        contentContainerStyle={{
+          paddingHorizontal: 16,
+          paddingTop: 120,
+          paddingBottom: 20,
+        }}
+      >
         {orders.map((order) => (
           <LiquidGlass
             key={order.id}
@@ -36,7 +42,7 @@ export const OrdersScreen = () => {
           >
             <View className="p-md">
               <View className="flex-row justify-between items-center mb-xs">
-                <Text 
+                <Text
                   className="text-sm font-bold"
                   style={{ color: colors.textPrimary }}
                 >
@@ -64,23 +70,23 @@ export const OrdersScreen = () => {
                   </Text>
                 </View>
               </View>
-              <Text 
+              <Text
                 className="text-xs mb-md"
                 style={{ color: colors.textMuted }}
               >
                 {order.date}
               </Text>
-              <View 
+              <View
                 className="flex-row justify-between items-center pt-sm"
                 style={{ borderTopWidth: 1, borderTopColor: colors.border }}
               >
-                <Text 
+                <Text
                   className="text-xs"
                   style={{ color: colors.textSecondary }}
                 >
                   Total Amount
                 </Text>
-                <Text 
+                <Text
                   className="text-sm font-[800]"
                   style={{ color: colors.primary }}
                 >
