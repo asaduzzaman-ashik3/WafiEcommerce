@@ -12,6 +12,7 @@ import { BookCategory } from "@/types/book_category";
 import { Product } from "@/types/product";
 import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Image,
   ScrollView,
   Text,
@@ -177,36 +178,16 @@ export const HomeScreen = () => {
           </View>
         )}
 
-        {/* New Arrivals Section */}
-        <View>
-          <Text
-            className="text-xl mb-md mt-lg border-l-2 pl-3 font-bold"
-            style={{
-              color: colors.textPrimary,
-              borderLeftColor: colors.primary,
-            }}
-          >
-            New Arrivals
-          </Text>
-        </View>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 10 }}
-        >
-          {products.map((item, index) => (
-            <ProductCard
-              key={item.id}
-              item={item}
-              cardWidth={cardWidth}
-              isLast={index === products.length - 1}
-            />
-          ))}
-        </ScrollView>
-
-        {/* Bestseller Section */}
-        {bestsellerProducts.length > 0 && (
+        {loadingProducts ? (
+          <View className="py-20 items-center justify-center">
+            <ActivityIndicator size="large" color={colors.primary} />
+            <Text className="mt-2 text-xs" style={{ color: colors.textSecondary }}>
+              Loading products...
+            </Text>
+          </View>
+        ) : (
           <>
+            {/* New Arrivals Section */}
             <View>
               <Text
                 className="text-xl mb-md mt-lg border-l-2 pl-3 font-bold"
@@ -215,7 +196,7 @@ export const HomeScreen = () => {
                   borderLeftColor: colors.primary,
                 }}
               >
-                Bestseller
+                New Arrivals
               </Text>
             </View>
             <ScrollView
@@ -223,77 +204,108 @@ export const HomeScreen = () => {
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{ paddingBottom: 10 }}
             >
-              {bestsellerProducts.map((item, index) => (
+              {products.map((item, index) => (
                 <ProductCard
                   key={item.id}
                   item={item}
                   cardWidth={cardWidth}
-                  isLast={index === bestsellerProducts.length - 1}
+                  isLast={index === products.length - 1}
                 />
               ))}
             </ScrollView>
-          </>
-        )}
 
-        {/* Top Rated Section */}
-        {topRatedProducts.length > 0 && (
-          <>
-            <View>
-              <Text
-                className="text-xl mb-md mt-lg border-l-2 pl-3 font-bold"
-                style={{
-                  color: colors.textPrimary,
-                  borderLeftColor: colors.primary,
-                }}
-              >
-                Top Rated
-              </Text>
-            </View>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ paddingBottom: 10 }}
-            >
-              {topRatedProducts.map((item, index) => (
-                <ProductCard
-                  key={item.id}
-                  item={item}
-                  cardWidth={cardWidth}
-                  isLast={index === topRatedProducts.length - 1}
-                />
-              ))}
-            </ScrollView>
-          </>
-        )}
+            {/* Bestseller Section */}
+            {bestsellerProducts.length > 0 && (
+              <>
+                <View>
+                  <Text
+                    className="text-xl mb-md mt-lg border-l-2 pl-3 font-bold"
+                    style={{
+                      color: colors.textPrimary,
+                      borderLeftColor: colors.primary,
+                    }}
+                  >
+                    Bestseller
+                  </Text>
+                </View>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ paddingBottom: 10 }}
+                >
+                  {bestsellerProducts.map((item, index) => (
+                    <ProductCard
+                      key={item.id}
+                      item={item}
+                      cardWidth={cardWidth}
+                      isLast={index === bestsellerProducts.length - 1}
+                    />
+                  ))}
+                </ScrollView>
+              </>
+            )}
 
-        {/* Discounts Section */}
-        {discountProducts.length > 0 && (
-          <>
-            <View>
-              <Text
-                className="text-xl mb-md mt-lg border-l-2 pl-3 font-bold"
-                style={{
-                  color: colors.textPrimary,
-                  borderLeftColor: colors.primary,
-                }}
-              >
-                Discounts
-              </Text>
-            </View>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ paddingBottom: 10 }}
-            >
-              {discountProducts.map((item, index) => (
-                <ProductCard
-                  key={item.id}
-                  item={item}
-                  cardWidth={cardWidth}
-                  isLast={index === discountProducts.length - 1}
-                />
-              ))}
-            </ScrollView>
+            {/* Top Rated Section */}
+            {topRatedProducts.length > 0 && (
+              <>
+                <View>
+                  <Text
+                    className="text-xl mb-md mt-lg border-l-2 pl-3 font-bold"
+                    style={{
+                      color: colors.textPrimary,
+                      borderLeftColor: colors.primary,
+                    }}
+                  >
+                    Top Rated
+                  </Text>
+                </View>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ paddingBottom: 10 }}
+                >
+                  {topRatedProducts.map((item, index) => (
+                    <ProductCard
+                      key={item.id}
+                      item={item}
+                      cardWidth={cardWidth}
+                      isLast={index === topRatedProducts.length - 1}
+                    />
+                  ))}
+                </ScrollView>
+              </>
+            )}
+
+            {/* Discounts Section */}
+            {discountProducts.length > 0 && (
+              <>
+                <View>
+                  <Text
+                    className="text-xl mb-md mt-lg border-l-2 pl-3 font-bold"
+                    style={{
+                      color: colors.textPrimary,
+                      borderLeftColor: colors.primary,
+                    }}
+                  >
+                    Discounts
+                  </Text>
+                </View>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ paddingBottom: 10 }}
+                >
+                  {discountProducts.map((item, index) => (
+                    <ProductCard
+                      key={item.id}
+                      item={item}
+                      cardWidth={cardWidth}
+                      isLast={index === discountProducts.length - 1}
+                    />
+                  ))}
+                </ScrollView>
+              </>
+            )}
           </>
         )}
 
