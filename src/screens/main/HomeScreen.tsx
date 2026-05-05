@@ -4,6 +4,7 @@ import { LiquidGlass } from "@/components/shared/LiquidGlass";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { BannerSkeleton } from "@/components/ui/skeleton/BannerSkeleton";
 import { CategoriesSkeleton } from "@/components/ui/skeleton/Categories_skeleton";
+import { ProductCard } from "@/components/shared/cards/product_card";
 import { Sizes } from "@/constants/sizes";
 import { HomeService } from "@/services/home_service";
 import { Banner } from "@/types/banner_types";
@@ -27,6 +28,9 @@ export const HomeScreen = () => {
   const [categories, setCategories] = useState<BookCategory[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [products, setProducts] = useState<Product[]>([]);
+  const [bestsellerProducts, setBestsellerProducts] = useState<Product[]>([]);
+  const [topRatedProducts, setTopRatedProducts] = useState<Product[]>([]);
+  const [discountProducts, setDiscountProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const { colors } = useTheme();
 
@@ -70,8 +74,16 @@ export const HomeScreen = () => {
       const loadProducts = async () => {
         try {
           setLoadingProducts(true);
-          const data = await HomeService.getNewArrivalsProducts();
-          setProducts(data);
+          const [newArrivals, bestsellers, topRated, discounts] = await Promise.all([
+            HomeService.getNewArrivalsProducts(),
+            HomeService.getBestsellerProducts(),
+            HomeService.getTopRatedProducts(),
+            HomeService.getDiscountedProducts(),
+          ]);
+          setProducts(newArrivals);
+          setBestsellerProducts(bestsellers);
+          setTopRatedProducts(topRated);
+          setDiscountProducts(discounts);
         } catch (err: any) {
           Toast.show({
             type: "error",
@@ -165,6 +177,7 @@ export const HomeScreen = () => {
           </View>
         )}
 
+        {/* New Arrivals Section */}
         <View>
           <Text
             className="text-xl mb-md mt-lg border-l-2 pl-3 font-bold"
@@ -182,372 +195,107 @@ export const HomeScreen = () => {
           contentContainerStyle={{ paddingBottom: 10 }}
         >
           {products.map((item, index) => (
-            <View
+            <ProductCard
               key={item.id}
-              style={{ width: cardWidth }}
-              className={index === products.length - 1 ? "" : "mr-md"}
-            >
-              <LiquidGlass
-                className="overflow-hidden"
-                borderRadius={Sizes.radiusMd}
-                pressable={false}
-              >
-                <View className="relative">
-                  <View
-                    className="h-[160px] w-full items-center justify-center"
-                    style={{ backgroundColor: colors.primary + "05" }}
-                  >
-                    <Image
-                      source={{ uri: item.image_url[0] }}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        resizeMode: "cover",
-                      }}
-                    />
-                    <View className="absolute inset-0 items-center justify-center -z-10">
-                      <IconSymbol
-                        name="photo.fill"
-                        size={32}
-                        color={colors.primary + "40"}
-                      />
-                    </View>
-                  </View>
-
-                  {item.discount_tag && (
-                    <View
-                      className="absolute top-2 left-2 px-2 py-1 rounded-full"
-                      style={{ backgroundColor: colors.secondary }}
-                    >
-                      <Text className="text-[10px] font-bold text-white">
-                        {item.discount_tag}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-
-                <View className="p-sm">
-                  <Text
-                    className="text-sm font-bold"
-                    style={{ color: colors.textPrimary }}
-                    numberOfLines={1}
-                  >
-                    {item.title}
-                  </Text>
-
-                  <View className="flex-row items-center justify-between mt-xs">
-                    <View className="flex-row gap-1 items-center">
-                      <Text
-                        className="text-md font-bold"
-                        style={{ color: colors.primary }}
-                      >
-                        ৳{item.discount_price}
-                      </Text>
-                      {item.original_price > item.discount_price && (
-                        <Text
-                          className="text-[11px] line-through"
-                          style={{ color: colors.primary + "80" }}
-                        >
-                          ৳{item.original_price}
-                        </Text>
-                      )}
-                    </View>
-                  </View>
-
-                  <TouchableOpacity
-                    className="mt-sm py-2 rounded-lg items-center justify-center shadow-sm"
-                    style={{ backgroundColor: colors.primary }}
-                    onPress={() => {}}
-                    activeOpacity={0.8}
-                  >
-                    <Text className="text-white text-xs font-bold">
-                      Add to Cart
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </LiquidGlass>
-            </View>
+              item={item}
+              cardWidth={cardWidth}
+              isLast={index === products.length - 1}
+            />
           ))}
         </ScrollView>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 10 }}
-        >
-          {products.map((item, index) => (
-            <View
-              key={item.id}
-              style={{ width: cardWidth }}
-              className={index === products.length - 1 ? "" : "mr-md"}
-            >
-              <LiquidGlass
-                className="overflow-hidden"
-                borderRadius={Sizes.radiusMd}
-                pressable={false}
+
+        {/* Bestseller Section */}
+        {bestsellerProducts.length > 0 && (
+          <>
+            <View>
+              <Text
+                className="text-xl mb-md mt-lg border-l-2 pl-3 font-bold"
+                style={{
+                  color: colors.textPrimary,
+                  borderLeftColor: colors.primary,
+                }}
               >
-                <View className="relative">
-                  <View
-                    className="h-[160px] w-full items-center justify-center"
-                    style={{ backgroundColor: colors.primary + "05" }}
-                  >
-                    <Image
-                      source={{ uri: item.image_url[0] }}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        resizeMode: "cover",
-                      }}
-                    />
-                    <View className="absolute inset-0 items-center justify-center -z-10">
-                      <IconSymbol
-                        name="photo.fill"
-                        size={32}
-                        color={colors.primary + "40"}
-                      />
-                    </View>
-                  </View>
-
-                  {item.discount_tag && (
-                    <View
-                      className="absolute top-2 left-2 px-2 py-1 rounded-full"
-                      style={{ backgroundColor: colors.secondary }}
-                    >
-                      <Text className="text-[10px] font-bold text-white">
-                        {item.discount_tag}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-
-                <View className="p-sm">
-                  <Text
-                    className="text-sm font-bold"
-                    style={{ color: colors.textPrimary }}
-                    numberOfLines={1}
-                  >
-                    {item.title}
-                  </Text>
-
-                  <View className="flex-row items-center justify-between mt-xs">
-                    <View className="flex-row gap-1 items-center">
-                      <Text
-                        className="text-md font-bold"
-                        style={{ color: colors.primary }}
-                      >
-                        ৳{item.discount_price}
-                      </Text>
-                      {item.original_price > item.discount_price && (
-                        <Text
-                          className="text-[11px] line-through"
-                          style={{ color: colors.primary + "80" }}
-                        >
-                          ৳{item.original_price}
-                        </Text>
-                      )}
-                    </View>
-                  </View>
-
-                  <TouchableOpacity
-                    className="mt-sm py-2 rounded-lg items-center justify-center shadow-sm"
-                    style={{ backgroundColor: colors.primary }}
-                    onPress={() => {}}
-                    activeOpacity={0.8}
-                  >
-                    <Text className="text-white text-xs font-bold">
-                      Add to Cart
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </LiquidGlass>
+                Bestseller
+              </Text>
             </View>
-          ))}
-        </ScrollView>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 10 }}
-        >
-          {products.map((item, index) => (
-            <View
-              key={item.id}
-              style={{ width: cardWidth }}
-              className={index === products.length - 1 ? "" : "mr-md"}
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: 10 }}
             >
-              <LiquidGlass
-                className="overflow-hidden"
-                borderRadius={Sizes.radiusMd}
-                pressable={false}
+              {bestsellerProducts.map((item, index) => (
+                <ProductCard
+                  key={item.id}
+                  item={item}
+                  cardWidth={cardWidth}
+                  isLast={index === bestsellerProducts.length - 1}
+                />
+              ))}
+            </ScrollView>
+          </>
+        )}
+
+        {/* Top Rated Section */}
+        {topRatedProducts.length > 0 && (
+          <>
+            <View>
+              <Text
+                className="text-xl mb-md mt-lg border-l-2 pl-3 font-bold"
+                style={{
+                  color: colors.textPrimary,
+                  borderLeftColor: colors.primary,
+                }}
               >
-                <View className="relative">
-                  <View
-                    className="h-[160px] w-full items-center justify-center"
-                    style={{ backgroundColor: colors.primary + "05" }}
-                  >
-                    <Image
-                      source={{ uri: item.image_url[0] }}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        resizeMode: "cover",
-                      }}
-                    />
-                    <View className="absolute inset-0 items-center justify-center -z-10">
-                      <IconSymbol
-                        name="photo.fill"
-                        size={32}
-                        color={colors.primary + "40"}
-                      />
-                    </View>
-                  </View>
-
-                  {item.discount_tag && (
-                    <View
-                      className="absolute top-2 left-2 px-2 py-1 rounded-full"
-                      style={{ backgroundColor: colors.secondary }}
-                    >
-                      <Text className="text-[10px] font-bold text-white">
-                        {item.discount_tag}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-
-                <View className="p-sm">
-                  <Text
-                    className="text-sm font-bold"
-                    style={{ color: colors.textPrimary }}
-                    numberOfLines={1}
-                  >
-                    {item.title}
-                  </Text>
-
-                  <View className="flex-row items-center justify-between mt-xs">
-                    <View className="flex-row gap-1 items-center">
-                      <Text
-                        className="text-md font-bold"
-                        style={{ color: colors.primary }}
-                      >
-                        ৳{item.discount_price}
-                      </Text>
-                      {item.original_price > item.discount_price && (
-                        <Text
-                          className="text-[11px] line-through"
-                          style={{ color: colors.primary + "80" }}
-                        >
-                          ৳{item.original_price}
-                        </Text>
-                      )}
-                    </View>
-                  </View>
-
-                  <TouchableOpacity
-                    className="mt-sm py-2 rounded-lg items-center justify-center shadow-sm"
-                    style={{ backgroundColor: colors.primary }}
-                    onPress={() => {}}
-                    activeOpacity={0.8}
-                  >
-                    <Text className="text-white text-xs font-bold">
-                      Add to Cart
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </LiquidGlass>
+                Top Rated
+              </Text>
             </View>
-          ))}
-        </ScrollView>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 10 }}
-        >
-          {products.map((item, index) => (
-            <View
-              key={item.id}
-              style={{ width: cardWidth }}
-              className={index === products.length - 1 ? "" : "mr-md"}
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: 10 }}
             >
-              <LiquidGlass
-                className="overflow-hidden"
-                borderRadius={Sizes.radiusMd}
-                pressable={false}
+              {topRatedProducts.map((item, index) => (
+                <ProductCard
+                  key={item.id}
+                  item={item}
+                  cardWidth={cardWidth}
+                  isLast={index === topRatedProducts.length - 1}
+                />
+              ))}
+            </ScrollView>
+          </>
+        )}
+
+        {/* Discounts Section */}
+        {discountProducts.length > 0 && (
+          <>
+            <View>
+              <Text
+                className="text-xl mb-md mt-lg border-l-2 pl-3 font-bold"
+                style={{
+                  color: colors.textPrimary,
+                  borderLeftColor: colors.primary,
+                }}
               >
-                <View className="relative">
-                  <View
-                    className="h-[160px] w-full items-center justify-center"
-                    style={{ backgroundColor: colors.primary + "05" }}
-                  >
-                    <Image
-                      source={{ uri: item.image_url[0] }}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        resizeMode: "cover",
-                      }}
-                    />
-                    <View className="absolute inset-0 items-center justify-center -z-10">
-                      <IconSymbol
-                        name="photo.fill"
-                        size={32}
-                        color={colors.primary + "40"}
-                      />
-                    </View>
-                  </View>
-
-                  {item.discount_tag && (
-                    <View
-                      className="absolute top-2 left-2 px-2 py-1 rounded-full"
-                      style={{ backgroundColor: colors.secondary }}
-                    >
-                      <Text className="text-[10px] font-bold text-white">
-                        {item.discount_tag}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-
-                <View className="p-sm">
-                  <Text
-                    className="text-sm font-bold"
-                    style={{ color: colors.textPrimary }}
-                    numberOfLines={1}
-                  >
-                    {item.title}
-                  </Text>
-
-                  <View className="flex-row items-center justify-between mt-xs">
-                    <View className="flex-row gap-1 items-center">
-                      <Text
-                        className="text-md font-bold"
-                        style={{ color: colors.primary }}
-                      >
-                        ৳{item.discount_price}
-                      </Text>
-                      {item.original_price > item.discount_price && (
-                        <Text
-                          className="text-[11px] line-through"
-                          style={{ color: colors.primary + "80" }}
-                        >
-                          ৳{item.original_price}
-                        </Text>
-                      )}
-                    </View>
-                  </View>
-
-                  <TouchableOpacity
-                    className="mt-sm py-2 rounded-lg items-center justify-center shadow-sm"
-                    style={{ backgroundColor: colors.primary }}
-                    onPress={() => {}}
-                    activeOpacity={0.8}
-                  >
-                    <Text className="text-white text-xs font-bold">
-                      Add to Cart
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </LiquidGlass>
+                Discounts
+              </Text>
             </View>
-          ))}
-        </ScrollView>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: 10 }}
+            >
+              {discountProducts.map((item, index) => (
+                <ProductCard
+                  key={item.id}
+                  item={item}
+                  cardWidth={cardWidth}
+                  isLast={index === discountProducts.length - 1}
+                />
+              ))}
+            </ScrollView>
+          </>
+        )}
 
         <View className="h-[100px]" />
       </ScrollView>

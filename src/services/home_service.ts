@@ -30,11 +30,27 @@ export const HomeService = {
   },
 
   async getNewArrivalsProducts(): Promise<Product[]> {
+    return this.getProductsByTag("New Arrivals");
+  },
+
+  async getBestsellerProducts(): Promise<Product[]> {
+    return this.getProductsByTag("Bestseller");
+  },
+
+  async getTopRatedProducts(): Promise<Product[]> {
+    return this.getProductsByTag("Top Rated");
+  },
+
+  async getDiscountedProducts(): Promise<Product[]> {
+    return this.getProductsByTag("Discounts");
+  },
+
+  async getProductsByTag(tag: string): Promise<Product[]> {
     try {
       const { data, error } = await supabase
         .from("products")
         .select("*")
-        .contains("tags", ["New Arrivals"]);
+        .contains("tags", [tag]);
 
       if (error) {
         throw error;
