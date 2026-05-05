@@ -1,29 +1,29 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Sizes } from "@/constants/sizes";
+import { useTheme } from "@/context/ThemeContext";
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
 } from "@react-navigation/drawer";
+import { router } from "expo-router";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LiquidGlass } from "./LiquidGlass";
-import { useTheme } from "@/context/ThemeContext";
 
 export const AppDrawer: React.FC<DrawerContentComponentProps> = (props) => {
   const insets = useSafeAreaInsets();
   const { colors, isDark } = useTheme();
 
   const menuItems = [
-    { label: "Home", icon: "house.fill", route: "(tabs)" },
+    { label: "Home", icon: "house.fill", route: "/" },
     {
       label: "Categories",
       icon: "square.grid.2x2.fill",
-      route: "(tabs)/categories",
+      route: "/categories",
     },
-    { label: "My Cart", icon: "cart.fill", route: "(tabs)/cart" },
-    { label: "Profile", icon: "person.fill", route: "(tabs)/profile" },
-    { label: "Settings", icon: "gearshape.fill", route: "settings" },
+    { label: "My Orders", icon: "cart.fill", route: "/orders" },
+    { label: "Profile", icon: "person.fill", route: "/profile" },
   ];
 
   return (
@@ -75,7 +75,10 @@ export const AppDrawer: React.FC<DrawerContentComponentProps> = (props) => {
               <TouchableOpacity
                 key={index}
                 className="flex-row items-center p-md rounded-xl"
-                onPress={() => props.navigation.navigate(item.route as any)}
+                onPress={() => {
+                  props.navigation.closeDrawer();
+                  router.push(item.route as any);
+                }}
               >
                 <View
                   className="w-10 h-10 rounded-full items-center justify-center mr-md"
