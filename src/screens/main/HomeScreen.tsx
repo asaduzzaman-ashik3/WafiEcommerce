@@ -9,8 +9,9 @@ import { Sizes } from "@/constants/sizes";
 import { HomeService } from "@/services/home_service";
 import { Banner } from "@/types/banner_types";
 import { BookCategory } from "@/types/book_category";
+import { Product } from "@/types/product";
 import React, { useEffect, useState } from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
 import Toast from "react-native-toast-message";
 
 export const HomeScreen = () => {
@@ -18,163 +19,70 @@ export const HomeScreen = () => {
   const [loadingBanners, setLoadingBanners] = useState(true);
   const [categories, setCategories] = useState<BookCategory[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
 
-  const products = [
-    {
-      id: "1",
-      product_id: "NH001",
-      category_id: "ORGANIC_FOOD",
-      title:
-        "Organic Honey 500g Organic Honey 500gOrganic Honey 500gOrganic Honey 500gOrganic Honey 500g",
-      brand_name: "PureBee",
-      description: "Raw organic honey rich in antioxidants and natural energy.",
-      image_urls: [
-        "https://backoffice.ghorerbazar.com/banner/o1uH11775363016-light.jpg",
-      ],
-      original_price: 450,
-      discount_price: 399,
-      discount_tag: "11% OFF",
-      label_tag: "Best Seller",
-    },
-    {
-      id: "2",
-      product_id: "NH002",
-      category_id: "HERBAL",
-      title: "Aloe Vera Juice 1L",
-      brand_name: "NatureLife",
-      description: "Detoxifying aloe vera juice for digestion and skin health.",
-      image_urls: [
-        "https://backoffice.ghorerbazar.com/banner/sCUkg1774768074-dark.png",
-        "https://images.unsplash.com/photo-1615486364462-ef6363f3c2b0?2",
-      ],
-      original_price: 600,
-      discount_price: 520,
-      discount_tag: "13% OFF",
-      label_tag: "Trending",
-    },
-    {
-      id: "3",
-      product_id: "NH003",
-      category_id: "ORGANIC_FOOD",
-      title: "Chia Seeds 250g",
-      brand_name: "Organic Valley",
-      description: "High fiber superfood rich in omega-3 and protein.",
-      image_urls: [
-        "https://backoffice.ghorerbazar.com/banner/wvLKI1771837751.jpeg",
-      ],
-      original_price: 350,
-      discount_price: 299,
-      discount_tag: "15% OFF",
-      label_tag: "Superfood",
-    },
-    {
-      id: "4",
-      product_id: "NH004",
-      category_id: "BEAUTY",
-      title: "Organic Coconut Oil 500ml",
-      brand_name: "CocoPure",
-      description: "Cold-pressed coconut oil for skin, hair and cooking.",
-      image_urls: [
-        "https://images.unsplash.com/photo-1600180758890-6b94519a8ba6",
-        "https://images.unsplash.com/photo-1600180758890-6b94519a8ba6?2",
-      ],
-      original_price: 500,
-      discount_price: 450,
-      discount_tag: "10% OFF",
-      label_tag: "Natural Care",
-    },
-    {
-      id: "5",
-      product_id: "NH005",
-      category_id: "HERBAL",
-      title: "Green Tea Detox Pack",
-      brand_name: "ZenHerb",
-      description: "Refreshing green tea for weight loss and detox.",
-      image_urls: ["https://images.unsplash.com/photo-1515823064-d6e0c04616a7"],
-      original_price: 300,
-      discount_price: 250,
-      discount_tag: "17% OFF",
-      label_tag: "Healthy Choice",
-    },
-    {
-      id: "6",
-      product_id: "NH006",
-      category_id: "SUPPLEMENT",
-      title: "Spirulina Tablets 120pcs",
-      brand_name: "BioFit",
-      description: "Plant-based protein supplement for immunity boost.",
-      image_urls: [
-        "https://images.unsplash.com/photo-1622484212850-eb596d769edc",
-      ],
-      original_price: 800,
-      discount_price: 699,
-      discount_tag: "13% OFF",
-      label_tag: "Immunity Boost",
-    },
-    {
-      id: "7",
-      product_id: "NH007",
-      category_id: "ORGANIC_FOOD",
-      title: "Brown Rice 5kg",
-      brand_name: "EcoGrain",
-      description: "Whole grain brown rice for healthy diet lifestyle.",
-      image_urls: [
-        "https://images.unsplash.com/photo-1607305387299-a3d9611cd469",
-      ],
-      original_price: 700,
-      discount_price: 620,
-      discount_tag: "11% OFF",
-      label_tag: "Organic",
-    },
-    {
-      id: "8",
-      product_id: "NH008",
-      category_id: "BEAUTY",
-      title: "Herbal Face Wash Gel",
-      brand_name: "HerbalGlow",
-      description: "Chemical-free face wash for glowing natural skin.",
-      image_urls: [
-        "https://images.unsplash.com/photo-1612810436541-336d8f1d7a9c",
-      ],
-      original_price: 350,
-      discount_price: 299,
-      discount_tag: "15% OFF",
-      label_tag: "Skin Care",
-    },
-  ];
+  const { width: windowWidth } = useWindowDimensions();
+  // Calculate card width: (Total Width - Container Padding (16*2) - Gap between cards (16)) / 2
+  const cardWidth = (windowWidth - 48) / 2;
 
   useEffect(() => {
     const loadHomeData = async () => {
-      try {
-        setLoadingBanners(true);
-        setLoadingCategories(true);
+      // BANNERS
+      const loadBanners = async () => {
+        try {
+          setLoadingBanners(true);
+          const data = await HomeService.getBanners();
+          setBanners(data);
+        } catch (err: any) {
+          Toast.show({
+            type: "error",
+            text1: "Banner Error",
+            text2: err?.message || "Failed to load banners",
+          });
+        } finally {
+          setLoadingBanners(false);
+        }
+      };
 
-        const bannerPromise = HomeService.getBanners();
+      // CATEGORIES
+      const loadCategories = async () => {
+        try {
+          setLoadingCategories(true);
+          const data = await HomeService.getCategories();
+          setCategories(data);
+        } catch (err: any) {
+          Toast.show({
+            type: "error",
+            text1: "Category Error",
+            text2: err?.message || "Failed to load categories",
+          });
+        } finally {
+          setLoadingCategories(false);
+        }
+      };
 
-        const banners = await bannerPromise;
-        setBanners(banners);
-      } catch (err) {
-        Toast.show({
-          type: "error",
-          text1: "Banners Error",
-          text2: err?.message || "Failed to load banners",
-        });
-      } finally {
-        setLoadingBanners(false);
-      }
+      // PRODUCTS
+      const loadProducts = async () => {
+        try {
+          setLoadingProducts(true);
+          const data = await HomeService.getNewArrivalsProducts();
+          setProducts(data);
+        } catch (err: any) {
+          Toast.show({
+            type: "error",
+            text1: "Products Error",
+            text2: err?.message || "Failed to load products",
+          });
+        } finally {
+          setLoadingProducts(false);
+        }
+      };
 
-      try {
-        const categories = await HomeService.getCategories();
-        setCategories(categories);
-      } catch (err) {
-        Toast.show({
-          type: "error",
-          text1: "Categories Error",
-          text2: err?.message || "Failed to load categories",
-        });
-      } finally {
-        setLoadingCategories(false);
-      }
+      // call all independently
+      loadBanners();
+      loadCategories();
+      loadProducts();
     };
 
     loadHomeData();
@@ -256,12 +164,22 @@ export const HomeScreen = () => {
           </View>
         )}
 
-        <Text className="text-[24px] font-[800] text-text-primary mb-md mt-lg">
-          Recent Items
-        </Text>
-        <View className="flex-row flex-wrap justify-between">
-          {products.map((item) => (
-            <View key={item.id} className="w-[48%] mb-md">
+        <View>
+          <Text className="text-xl text-text-primary mb-md mt-lg border-l-2 border-primary pl-3">
+            New Arrivals
+          </Text>
+        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 10 }}
+        >
+          {products.map((item, index) => (
+            <View
+              key={item.id}
+              style={{ width: cardWidth }}
+              className={index === products.length - 1 ? "" : "mr-md"}
+            >
               <LiquidGlass
                 className="overflow-hidden"
                 borderRadius={Sizes.radiusMd}
@@ -270,7 +188,7 @@ export const HomeScreen = () => {
                 <View className="relative">
                   <View className="h-[160px] w-full bg-primary/5 items-center justify-center">
                     <Image
-                      source={{ uri: item.image_urls[0] }}
+                      source={{ uri: item.image_url[0] }}
                       style={{
                         width: "100%",
                         height: "100%",
@@ -305,7 +223,7 @@ export const HomeScreen = () => {
 
                 <View className="p-sm">
                   <Text
-                    className="text-sm font-bold text-text-primary "
+                    className="text-sm font-bold text-text-primary"
                     numberOfLines={1}
                   >
                     {item.title}
@@ -337,7 +255,7 @@ export const HomeScreen = () => {
               </LiquidGlass>
             </View>
           ))}
-        </View>
+        </ScrollView>
 
         {/* Padding for bottom nav */}
         <View className="h-[100px]" />
