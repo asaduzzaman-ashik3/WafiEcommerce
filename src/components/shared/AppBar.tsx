@@ -1,5 +1,4 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Colors } from "@/constants/colors";
 import { Sizes } from "@/constants/sizes";
 import { DrawerActions } from "@react-navigation/native";
 import { useNavigation } from "expo-router";
@@ -7,6 +6,7 @@ import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LiquidGlass } from "./LiquidGlass";
+import { useTheme } from "@/context/ThemeContext";
 
 interface AppBarProps {
   title: string;
@@ -27,6 +27,7 @@ export const AppBar: React.FC<AppBarProps> = ({
 }) => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
+  const { colors } = useTheme();
 
   const handleDrawerToggle = () => {
     navigation.dispatch(DrawerActions.toggleDrawer());
@@ -47,7 +48,7 @@ export const AppBar: React.FC<AppBarProps> = ({
                 <IconSymbol
                   name="chevron.left"
                   size={24}
-                  color={Colors.textPrimary}
+                  color={colors.textPrimary}
                 />
               </TouchableOpacity>
             ) : (
@@ -55,7 +56,7 @@ export const AppBar: React.FC<AppBarProps> = ({
                 <IconSymbol
                   name="line.3.horizontal"
                   size={24}
-                  color={Colors.primary}
+                  color={colors.primary}
                 />
               </TouchableOpacity>
             )}
@@ -63,7 +64,12 @@ export const AppBar: React.FC<AppBarProps> = ({
 
           {/* Center */}
           <View className="flex-1 items-center justify-center">
-            <Text className="text-[16px] font-bold text-primary">{title}</Text>
+            <Text 
+              className="text-[16px] font-bold" 
+              style={{ color: colors.primary }}
+            >
+              {title}
+            </Text>
           </View>
 
           {/* Right */}
@@ -74,7 +80,7 @@ export const AppBar: React.FC<AppBarProps> = ({
                 activeOpacity={0.7}
                 className="w-9 h-9 items-center justify-center"
               >
-                <IconSymbol name="bell.fill" size={22} color={Colors.primary} />
+                <IconSymbol name="bell.fill" size={22} color={colors.primary} />
                 {notificationCount > 0 && (
                   <View className="absolute top-0 right-0 min-w-[14px] h-[14px] bg-red-500 rounded-full items-center justify-center px-[3px]">
                     <Text className="text-[9px] font-bold text-white">

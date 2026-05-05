@@ -4,7 +4,6 @@ import { LiquidGlass } from "@/components/shared/LiquidGlass";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { BannerSkeleton } from "@/components/ui/skeleton/BannerSkeleton";
 import { CategoriesSkeleton } from "@/components/ui/skeleton/Categories_skeleton";
-import { Colors } from "@/constants/colors";
 import { Sizes } from "@/constants/sizes";
 import { HomeService } from "@/services/home_service";
 import { Banner } from "@/types/banner_types";
@@ -20,6 +19,7 @@ import {
   useWindowDimensions,
 } from "react-native";
 import Toast from "react-native-toast-message";
+import { useTheme } from "@/context/ThemeContext";
 
 export const HomeScreen = () => {
   const [banners, setBanners] = useState<Banner[]>([]);
@@ -28,14 +28,13 @@ export const HomeScreen = () => {
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [products, setProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
+  const { colors } = useTheme();
 
   const { width: windowWidth } = useWindowDimensions();
-  // Calculate card width: (Total Width - Container Padding (16*2) - Gap between cards (16)) / 2
   const cardWidth = (windowWidth - 48) / 2;
 
   useEffect(() => {
     const loadHomeData = async () => {
-      // BANNERS
       const loadBanners = async () => {
         try {
           setLoadingBanners(true);
@@ -52,7 +51,6 @@ export const HomeScreen = () => {
         }
       };
 
-      // CATEGORIES
       const loadCategories = async () => {
         try {
           setLoadingCategories(true);
@@ -69,7 +67,6 @@ export const HomeScreen = () => {
         }
       };
 
-      // PRODUCTS
       const loadProducts = async () => {
         try {
           setLoadingProducts(true);
@@ -86,7 +83,6 @@ export const HomeScreen = () => {
         }
       };
 
-      // call all independently
       loadBanners();
       loadCategories();
       loadProducts();
@@ -124,24 +120,23 @@ export const HomeScreen = () => {
                   key={category.id}
                   borderRadius={Sizes.radiusFull}
                   onPress={() => {}}
-                  style={{ height: 50 }} // ← was 44
+                  style={{ height: 50 }}
                   pressable
                 >
                   <View
                     style={{
                       flexDirection: "row",
                       alignItems: "center",
-                      paddingHorizontal: 18, // ← was 14
-                      paddingVertical: 14, // ← was 10
-                      gap: 10, // ← was 8
+                      paddingHorizontal: 18,
+                      paddingVertical: 14,
+                      gap: 10,
                     }}
                   >
-                    {/* Icon badge */}
                     <View
                       style={{
-                        width: 30, // ← was 26
-                        height: 30, // ← was 26
-                        borderRadius: 17, // ← was 13
+                        width: 30,
+                        height: 30,
+                        borderRadius: 17,
                         overflow: "hidden",
                         borderWidth: 1,
                         borderColor: "rgba(255,255,255,0.6)",
@@ -153,12 +148,11 @@ export const HomeScreen = () => {
                       />
                     </View>
 
-                    {/* Label */}
                     <Text
                       style={{
-                        fontSize: 14, // ← was 13
+                        fontSize: 14,
                         fontWeight: "600",
-                        color: Colors.textPrimary,
+                        color: colors.textPrimary,
                         letterSpacing: 0.2,
                       }}
                     >
@@ -172,7 +166,10 @@ export const HomeScreen = () => {
         )}
 
         <View>
-          <Text className="text-xl text-text-primary mb-md mt-lg border-l-2 border-primary pl-3">
+          <Text 
+            className="text-xl mb-md mt-lg border-l-2 pl-3 font-bold"
+            style={{ color: colors.textPrimary, borderLeftColor: colors.primary }}
+          >
             New Arrivals
           </Text>
         </View>
@@ -193,7 +190,7 @@ export const HomeScreen = () => {
                 pressable={false}
               >
                 <View className="relative">
-                  <View className="h-[160px] w-full bg-primary/5 items-center justify-center">
+                  <View className="h-[160px] w-full items-center justify-center" style={{ backgroundColor: colors.primary + '05' }}>
                     <Image
                       source={{ uri: item.image_url[0] }}
                       style={{
@@ -206,13 +203,16 @@ export const HomeScreen = () => {
                       <IconSymbol
                         name="photo.fill"
                         size={32}
-                        color={Colors.primary + "40"}
+                        color={colors.primary + "40"}
                       />
                     </View>
                   </View>
 
                   {item.discount_tag && (
-                    <View className="absolute top-2 left-2 bg-secondary px-2 py-1 rounded-full">
+                    <View 
+                      className="absolute top-2 left-2 px-2 py-1 rounded-full"
+                      style={{ backgroundColor: colors.secondary }}
+                    >
                       <Text className="text-[10px] font-bold text-white">
                         {item.discount_tag}
                       </Text>
@@ -222,7 +222,8 @@ export const HomeScreen = () => {
 
                 <View className="p-sm">
                   <Text
-                    className="text-sm font-bold text-text-primary"
+                    className="text-sm font-bold"
+                    style={{ color: colors.textPrimary }}
                     numberOfLines={1}
                   >
                     {item.title}
@@ -230,11 +231,14 @@ export const HomeScreen = () => {
 
                   <View className="flex-row items-center justify-between mt-xs">
                     <View className="flex-row gap-1 items-center">
-                      <Text className="text-md font-bold text-primary">
+                      <Text className="text-md font-bold" style={{ color: colors.primary }}>
                         ৳{item.discount_price}
                       </Text>
                       {item.original_price > item.discount_price && (
-                        <Text className="text-[11px] text-primary/80 line-through">
+                        <Text 
+                          className="text-[11px] line-through"
+                          style={{ color: colors.primary + '80' }}
+                        >
                           ৳{item.original_price}
                         </Text>
                       )}
@@ -242,9 +246,10 @@ export const HomeScreen = () => {
                   </View>
 
                   <TouchableOpacity
-                    className="mt-sm bg-primary py-2 rounded-lg items-center justify-center shadow-sm"
+                    className="mt-sm py-2 rounded-lg items-center justify-center shadow-sm"
+                    style={{ backgroundColor: colors.primary }}
                     onPress={() => {}}
-                    activeOpacity={1}
+                    activeOpacity={0.8}
                   >
                     <Text className="text-white text-xs font-bold">
                       Add to Cart
@@ -256,7 +261,6 @@ export const HomeScreen = () => {
           ))}
         </ScrollView>
 
-        {/* Padding for bottom nav */}
         <View className="h-[100px]" />
       </ScrollView>
     </View>

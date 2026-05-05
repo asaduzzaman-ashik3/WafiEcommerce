@@ -7,8 +7,8 @@ import {
   TextStyle,
 } from "react-native";
 import { LiquidGlass } from "@/components/shared/LiquidGlass";
-import { Colors } from "@/constants/colors";
 import { Sizes } from "@/constants/sizes";
+import { useTheme } from "@/context/ThemeContext";
 
 interface AppButtonProps {
   title: string;
@@ -29,40 +29,44 @@ export const AppButton: React.FC<AppButtonProps> = ({
   disabled,
   variant = "primary",
 }) => {
-  const getVariantClasses = () => {
+  const { colors } = useTheme();
+
+  const getBackgroundColor = () => {
     switch (variant) {
       case "primary":
-        return "bg-primary-pale";
+        return colors.primary;
       case "secondary":
-        return "bg-secondary-pale";
+        return colors.secondary;
       case "outline":
-        return "bg-transparent border border-primary";
+        return "transparent";
       default:
-        return "bg-primary-pale";
+        return colors.primary;
     }
   };
 
   const getTextColor = () => {
     switch (variant) {
       case "primary":
-        return Colors.primary;
       case "secondary":
-        return Colors.secondary;
+        return "#FFFFFF";
       case "outline":
-        return Colors.primary;
+        return colors.primary;
       default:
-        return Colors.primary;
+        return "#FFFFFF";
     }
   };
 
   return (
     <LiquidGlass
       onPress={disabled || loading ? undefined : onPress}
-      className={`h-14 px-xl min-w-[120px] ${getVariantClasses()} ${disabled ? "opacity-50" : ""}`}
-      style={style}
+      className={`h-14 px-xl min-w-[120px] ${disabled ? "opacity-50" : ""}`}
+      style={[{ backgroundColor: getBackgroundColor() }, style]}
       borderRadius={Sizes.radiusFull}
     >
-      <View className="flex-1 items-center justify-center">
+      <View 
+        className={`flex-1 items-center justify-center ${variant === 'outline' ? 'border' : ''}`}
+        style={variant === 'outline' ? { borderColor: colors.primary, borderRadius: Sizes.radiusFull } : {}}
+      >
         {loading ? (
           <ActivityIndicator color={getTextColor()} size="small" />
         ) : (

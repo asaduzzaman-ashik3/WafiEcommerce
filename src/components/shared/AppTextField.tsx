@@ -1,8 +1,8 @@
-import { Colors } from "@/constants/colors";
 import { Sizes } from "@/constants/sizes";
 import React from "react";
 import { Text, TextInput, TextInputProps, View, ViewStyle } from "react-native";
 import { LiquidGlass } from "@/components/shared/LiquidGlass";
+import { useTheme } from "@/context/ThemeContext";
 
 interface AppTextFieldProps extends TextInputProps {
   label?: string;
@@ -16,10 +16,15 @@ export const AppTextField: React.FC<AppTextFieldProps> = ({
   containerStyle,
   ...props
 }) => {
+  const { colors } = useTheme();
+
   return (
     <View className="mb-md" style={containerStyle}>
       {label && (
-        <Text className="text-xs font-semibold text-text-secondary mb-xs ml-xs">
+        <Text 
+          className="text-xs font-semibold mb-xs ml-xs"
+          style={{ color: colors.textSecondary }}
+        >
           {label}
         </Text>
       )}
@@ -29,8 +34,9 @@ export const AppTextField: React.FC<AppTextFieldProps> = ({
         className="h-14 px-md justify-center"
       >
         <TextInput
-          className="text-base text-text-primary font-medium"
-          placeholderTextColor={Colors.textMuted}
+          className="text-base font-medium"
+          style={{ color: colors.textPrimary }}
+          placeholderTextColor={colors.textMuted}
           {...props}
         />
       </LiquidGlass>

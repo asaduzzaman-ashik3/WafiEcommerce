@@ -1,11 +1,13 @@
 import { AppBar } from "@/components/shared/AppBar";
 import { LiquidGlass } from "@/components/shared/LiquidGlass";
-import { Colors } from "@/constants/colors";
 import { Sizes } from "@/constants/sizes";
 import React from "react";
 import { ScrollView, Text, View } from "react-native";
+import { useTheme } from "@/context/ThemeContext";
 
 export const OrdersScreen = () => {
+  const { colors } = useTheme();
+
   const orders = [
     {
       id: "#W9823",
@@ -34,7 +36,10 @@ export const OrdersScreen = () => {
           >
             <View className="p-md">
               <View className="flex-row justify-between items-center mb-xs">
-                <Text className="text-sm font-bold text-text-primary">
+                <Text 
+                  className="text-sm font-bold"
+                  style={{ color: colors.textPrimary }}
+                >
                   {order.id}
                 </Text>
                 <View
@@ -42,8 +47,8 @@ export const OrdersScreen = () => {
                   style={{
                     backgroundColor:
                       order.status === "Delivered"
-                        ? Colors.success + "20"
-                        : Colors.warning + "20",
+                        ? colors.success + "20"
+                        : colors.warning + "20",
                   }}
                 >
                   <Text
@@ -51,22 +56,34 @@ export const OrdersScreen = () => {
                     style={{
                       color:
                         order.status === "Delivered"
-                          ? Colors.success
-                          : Colors.warning,
+                          ? colors.success
+                          : colors.warning,
                     }}
                   >
                     {order.status}
                   </Text>
                 </View>
               </View>
-              <Text className="text-xs text-text-muted mb-md">
+              <Text 
+                className="text-xs mb-md"
+                style={{ color: colors.textMuted }}
+              >
                 {order.date}
               </Text>
-              <View className="flex-row justify-between items-center border-t border-black/5 pt-sm">
-                <Text className="text-xs text-text-secondary">
+              <View 
+                className="flex-row justify-between items-center pt-sm"
+                style={{ borderTopWidth: 1, borderTopColor: colors.border }}
+              >
+                <Text 
+                  className="text-xs"
+                  style={{ color: colors.textSecondary }}
+                >
                   Total Amount
                 </Text>
-                <Text className="text-sm font-[800] text-primary">
+                <Text 
+                  className="text-sm font-[800]"
+                  style={{ color: colors.primary }}
+                >
                   {order.amount}
                 </Text>
               </View>

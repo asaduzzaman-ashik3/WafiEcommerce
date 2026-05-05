@@ -1,5 +1,4 @@
 // src/shared/components/LiquidGlass.tsx
-import { Colors } from "@/constants/colors";
 import { BlurView } from "expo-blur";
 import React, { useRef } from "react";
 import {
@@ -9,6 +8,7 @@ import {
   View,
   ViewStyle,
 } from "react-native";
+import { useTheme } from "@/context/ThemeContext";
 
 export interface LiquidGlassProps extends PressableProps {
   children: React.ReactNode;
@@ -32,6 +32,7 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
   const scale = useRef(new Animated.Value(1)).current;
   const rippleScale = useRef(new Animated.Value(0)).current;
   const rippleOpacity = useRef(new Animated.Value(0)).current;
+  const { colors } = useTheme();
 
   const onPressIn = (event: any) => {
     Animated.spring(scale, {
@@ -73,7 +74,7 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
         {
           borderRadius,
           transform: [{ scale }],
-          shadowColor: Colors.glassShadow,
+          shadowColor: colors.glassShadow,
           shadowOffset: { width: 0, height: 6 },
           shadowOpacity: 1,
           shadowRadius: 16,
@@ -87,7 +88,7 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
         className="absolute inset-0"
         style={{
           borderRadius,
-          backgroundColor: Colors.glassBg,
+          backgroundColor: colors.glassBg,
           opacity: 0.5, // Further reduced from 1.0 to make it more transparent
           zIndex: -2,
         }}

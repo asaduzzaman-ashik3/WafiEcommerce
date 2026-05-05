@@ -1,11 +1,11 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Colors } from "@/constants/colors";
 import { Sizes } from "@/constants/sizes";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import React, { useRef } from "react";
 import { Animated, Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LiquidGlass } from "./LiquidGlass";
+import { useTheme } from "@/context/ThemeContext";
 
 const TabItem = ({
   label,
@@ -19,6 +19,7 @@ const TabItem = ({
   route: string;
 }) => {
   const itemScale = useRef(new Animated.Value(1)).current;
+  const { colors } = useTheme();
 
   const handlePressIn = () => {
     Animated.spring(itemScale, {
@@ -68,9 +69,10 @@ const TabItem = ({
             style={{ height: 62, width: 75 }}
           >
             <View className="items-center justify-center">
-              {getIcon(route, Colors.primary)}
+              {getIcon(route, colors.primary)}
               <Text
-                className="text-primary font-bold text-[10px] mt-[2px]"
+                className="font-bold text-[10px] mt-[2px]"
+                style={{ color: colors.primary }}
                 numberOfLines={1}
               >
                 {label}
@@ -79,8 +81,11 @@ const TabItem = ({
           </LiquidGlass>
         ) : (
           <View className="items-center justify-center">
-            {getIcon(route, "black")}
-            <Text className="text-black text-[10px] mt-1 opacity-80 font-medium">
+            {getIcon(route, colors.textMuted)}
+            <Text 
+              className="text-[10px] mt-1 font-medium"
+              style={{ color: colors.textMuted }}
+            >
               {label}
             </Text>
           </View>

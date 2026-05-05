@@ -1,5 +1,4 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Colors } from "@/constants/colors";
 import { Sizes } from "@/constants/sizes";
 import {
   DrawerContentComponentProps,
@@ -9,9 +8,11 @@ import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LiquidGlass } from "./LiquidGlass";
+import { useTheme } from "@/context/ThemeContext";
 
 export const AppDrawer: React.FC<DrawerContentComponentProps> = (props) => {
   const insets = useSafeAreaInsets();
+  const { colors, isDark } = useTheme();
 
   const menuItems = [
     { label: "Home", icon: "house.fill", route: "(tabs)" },
@@ -26,31 +27,40 @@ export const AppDrawer: React.FC<DrawerContentComponentProps> = (props) => {
   ];
 
   return (
-    <View className="flex-1 bg-transparent">
+    <View className="flex-1" style={{ backgroundColor: colors.surface }}>
       <DrawerContentScrollView
         {...props}
         scrollEnabled={false}
         contentContainerStyle={{ paddingTop: 0 }}
       >
-        <View style={{ paddingTop: insets.top + Sizes.md }} className=" pb-xl">
+        <View style={{ paddingTop: insets.top + Sizes.md }} className="px-md pb-xl">
           <LiquidGlass
             borderRadius={20}
             className="p-md mb-xl"
             pressable={false}
           >
             <View className="flex-row items-center">
-              <View className="w-14 h-14 rounded-full bg-primary/20 items-center justify-center mr-md">
+              <View 
+                className="w-14 h-14 rounded-full items-center justify-center mr-md"
+                style={{ backgroundColor: colors.primary + '20' }}
+              >
                 <IconSymbol
                   name="person.fill"
                   size={32}
-                  color={Colors.primary}
+                  color={colors.primary}
                 />
               </View>
               <View>
-                <Text className="text-lg font-bold text-text-primary">
+                <Text 
+                  className="text-lg font-bold"
+                  style={{ color: colors.textPrimary }}
+                >
                   Wafi User
                 </Text>
-                <Text className="text-xs text-text-secondary">
+                <Text 
+                  className="text-xs"
+                  style={{ color: colors.textSecondary }}
+                >
                   premium member
                 </Text>
               </View>
@@ -64,14 +74,20 @@ export const AppDrawer: React.FC<DrawerContentComponentProps> = (props) => {
                 className="flex-row items-center p-md rounded-xl"
                 onPress={() => props.navigation.navigate(item.route as any)}
               >
-                <View className="w-10 h-10 rounded-full bg-white/40 items-center justify-center mr-md">
+                <View 
+                  className="w-10 h-10 rounded-full items-center justify-center mr-md"
+                  style={{ backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }}
+                >
                   <IconSymbol
                     name={item.icon as any}
                     size={20}
-                    color={Colors.primary}
+                    color={colors.primary}
                   />
                 </View>
-                <Text className="text-base font-semibold text-text-primary">
+                <Text 
+                  className="text-base font-semibold"
+                  style={{ color: colors.textPrimary }}
+                >
                   {item.label}
                 </Text>
               </TouchableOpacity>
@@ -85,13 +101,21 @@ export const AppDrawer: React.FC<DrawerContentComponentProps> = (props) => {
         style={{ paddingBottom: insets.bottom + Sizes.lg }}
         className="px-lg"
       >
-        <TouchableOpacity className="flex-row items-center p-md bg-red-50/50 rounded-xl">
+        <TouchableOpacity 
+          className="flex-row items-center p-md rounded-xl"
+          style={{ backgroundColor: colors.error + '15' }}
+        >
           <IconSymbol
             name="arrow.left.square.fill"
             size={20}
-            color={Colors.error}
+            color={colors.error}
           />
-          <Text className="ml-md text-base font-bold text-red-600">Logout</Text>
+          <Text 
+            className="ml-md text-base font-bold"
+            style={{ color: colors.error }}
+          >
+            Logout
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
