@@ -42,9 +42,8 @@ const TabItem = ({
   const getIcon = (name: string, color: string) => {
     let iconName: any = "house.fill";
     if (name === "index") iconName = "house.fill";
-    if (name === "categories") iconName = "square.grid.2x2.fill";
+    if (name === "categories" || name === "search") iconName = "magnifyingglass";
     if (name === "orders") iconName = "bag.fill";
-    if (name === "cart") iconName = "cart.fill";
     if (name === "profile") iconName = "person.fill";
     return <IconSymbol size={20} name={iconName} color={color} />;
   };

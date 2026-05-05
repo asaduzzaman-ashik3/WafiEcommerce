@@ -3,18 +3,18 @@ import { useTheme } from "@/context/ThemeContext";
 import React from "react";
 import { Text, View } from "react-native";
 
-export const CategoriesScreen = () => {
+export const SearchScreen = () => {
   const { colors } = useTheme();
 
   return (
     <View className="flex-1">
-      <AppBar title="Categories" />
+      <AppBar title="Search" />
       <View className="flex-1 items-center justify-center">
-        <Text 
+        <Text
           className="text-lg font-bold"
           style={{ color: colors.textPrimary }}
         >
-          Categories Screen
+          Search Screen
         </Text>
       </View>
     </View>
