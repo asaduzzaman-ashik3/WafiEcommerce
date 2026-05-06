@@ -128,8 +128,9 @@ export const HomeScreen = () => {
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
+              className="-mx-4"
               contentContainerStyle={{
-                paddingHorizontal: Sizes.md,
+                paddingHorizontal: 16,
                 alignItems: "center",
                 gap: 10,
               }}
@@ -211,7 +212,11 @@ export const HomeScreen = () => {
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ paddingBottom: 10 }}
+              className="-mx-4"
+              contentContainerStyle={{
+                paddingHorizontal: 16,
+                paddingBottom: 10,
+              }}
             >
               {products.map((item, index) => (
                 <ProductCard
@@ -240,7 +245,11 @@ export const HomeScreen = () => {
                 <ScrollView
                   horizontal
                   showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={{ paddingBottom: 10 }}
+                  className="-mx-4"
+                  contentContainerStyle={{
+                    paddingHorizontal: 16,
+                    paddingBottom: 10,
+                  }}
                 >
                   {bestsellerProducts.map((item, index) => (
                     <ProductCard
@@ -271,7 +280,11 @@ export const HomeScreen = () => {
                 <ScrollView
                   horizontal
                   showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={{ paddingBottom: 10 }}
+                  className="-mx-4"
+                  contentContainerStyle={{
+                    paddingHorizontal: 16,
+                    paddingBottom: 10,
+                  }}
                 >
                   {topRatedProducts.map((item, index) => (
                     <ProductCard
@@ -302,7 +315,11 @@ export const HomeScreen = () => {
                 <ScrollView
                   horizontal
                   showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={{ paddingBottom: 10 }}
+                  className="-mx-4"
+                  contentContainerStyle={{
+                    paddingHorizontal: 16,
+                    paddingBottom: 10,
+                  }}
                 >
                   {discountProducts.map((item, index) => (
                     <ProductCard
