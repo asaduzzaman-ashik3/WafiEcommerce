@@ -12,6 +12,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.wafiecommerce.app",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "src/assets/images/android-icon-foreground.png",
@@ -45,8 +46,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "3568c8ff-278c-4e41-b635-c80a18ba2608"
+      }
     }
   }
 }
-
-

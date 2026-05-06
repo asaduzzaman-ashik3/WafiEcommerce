@@ -4,9 +4,11 @@ import { useTheme } from "@/context/ThemeContext";
 import { DrawerActions } from "@react-navigation/native";
 import { router, useNavigation } from "expo-router";
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LiquidGlass } from "./LiquidGlass";
+
+const APP_ICON = require("../../assets/images/app_icon.png");
 
 interface AppBarProps {
   title: string;
@@ -54,10 +56,9 @@ export const AppBar: React.FC<AppBarProps> = ({
                 color={colors.textPrimary}
               />
             ) : (
-              <IconSymbol
-                name="line.3.horizontal"
-                size={22}
-                color={colors.primary}
+              <Image
+                source={APP_ICON}
+                style={{ width: 34, height: 34, resizeMode: "contain" }}
               />
             )}
           </View>
@@ -71,7 +72,7 @@ export const AppBar: React.FC<AppBarProps> = ({
         >
           <View className="flex-1 items-center justify-center">
             <Text
-              className="text-base font-medium tracking-tight "
+              className="text-base font-medium tracking-tight"
               style={{ color: colors.primary }}
             >
               {title}
@@ -87,9 +88,7 @@ export const AppBar: React.FC<AppBarProps> = ({
         >
           <View className="flex-row items-center gap-4">
             {/* Cart Icon */}
-            <TouchableOpacity
-              onPress={() => router.push("/orders")}
-            >
+            <TouchableOpacity onPress={() => router.push("/orders")}>
               <IconSymbol name="cart.fill" size={20} color={colors.primary} />
             </TouchableOpacity>
 
