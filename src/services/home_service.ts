@@ -1,7 +1,8 @@
-import { supabase } from "@/config/supabase-config";
+
 import { Banner } from "@/types/banner_types";
 import { BookCategory } from "@/types/book_category";
 import { Product } from "@/types/product";
+import { supabase } from "../../lib/supabase";
 
 export const HomeService = {
   async getBanners(): Promise<Banner[]> {
