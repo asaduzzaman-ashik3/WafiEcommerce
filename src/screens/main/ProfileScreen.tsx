@@ -204,24 +204,7 @@ export const ProfileScreen = () => {
             className="p-4 pt-2 border-t"
             style={{ borderTopColor: colors.border + "40" }}
           >
-            <View className="flex-row items-center mb-4">
-              <View
-                className="w-10 h-10 rounded-xl items-center justify-center mr-4"
-                style={{ backgroundColor: colors.primary + "15" }}
-              >
-                <IconSymbol
-                  name="desktopcomputer"
-                  size={20}
-                  color={colors.primary}
-                />
-              </View>
-              <Text
-                className="text-base font-semibold flex-1"
-                style={{ color: colors.textPrimary }}
-              >
-                Theme Mode
-              </Text>
-            </View>
+            <View className="flex-row items-center mb-4"></View>
             <View className="flex-row gap-2">
               {themeOptions.map((option) => {
                 const active = themeMode === option.value;
