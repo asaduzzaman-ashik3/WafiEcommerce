@@ -19,6 +19,7 @@ export const unstable_settings = {
 import { AppDrawer } from "@/components/shared/AppDrawer";
 import { Drawer } from "expo-router/drawer";
 import { ThemeProvider as CustomThemeProvider } from "@/context/ThemeContext";
+import AuthProvider from "@/provider/auth-provider";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -26,33 +27,40 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <CustomThemeProvider>
-        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-          <MainLayout>
-            <Drawer
-              drawerContent={(props) => <AppDrawer {...props} />}
-              screenOptions={{
-                headerShown: false,
-                drawerType: "front",
-                overlayColor: "rgba(58, 107, 42, 0.2)",
-                drawerStyle: {
-                  backgroundColor: "#ffffff",
-                  width: "80%",
-                },
-                sceneStyle: { backgroundColor: "transparent" },
-              }}
-            >
-              <Drawer.Screen name="(tabs)" options={{ drawerLabel: "Home" }} />
-              <Drawer.Screen
-                name="modal"
-                options={{
-                  drawerLabel: "Modal",
-                  drawerItemStyle: { display: "none" },
+        <AuthProvider>
+          <ThemeProvider
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          >
+            <MainLayout>
+              <Drawer
+                drawerContent={(props) => <AppDrawer {...props} />}
+                screenOptions={{
+                  headerShown: false,
+                  drawerType: "front",
+                  overlayColor: "rgba(58, 107, 42, 0.2)",
+                  drawerStyle: {
+                    backgroundColor: "#ffffff",
+                    width: "80%",
+                  },
+                  sceneStyle: { backgroundColor: "transparent" },
                 }}
-              />
-            </Drawer>
-          </MainLayout>
-          <StatusBar style="auto" />
-        </ThemeProvider>
+              >
+                <Drawer.Screen
+                  name="(tabs)"
+                  options={{ drawerLabel: "Home" }}
+                />
+                <Drawer.Screen
+                  name="modal"
+                  options={{
+                    drawerLabel: "Modal",
+                    drawerItemStyle: { display: "none" },
+                  }}
+                />
+              </Drawer>
+            </MainLayout>
+            <StatusBar style="auto" />
+          </ThemeProvider>
+        </AuthProvider>
       </CustomThemeProvider>
     </SafeAreaProvider>
   );
