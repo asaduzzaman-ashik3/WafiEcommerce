@@ -17,11 +17,6 @@ export const AppDrawer: React.FC<DrawerContentComponentProps> = (props) => {
 
   const menuItems = [
     { label: "Home", icon: "house.fill", route: "/" },
-    {
-      label: "Categories",
-      icon: "square.grid.2x2.fill",
-      route: "/categories",
-    },
     { label: "My Orders", icon: "cart.fill", route: "/orders" },
     { label: "Profile", icon: "person.fill", route: "/profile" },
   ];
@@ -38,6 +33,7 @@ export const AppDrawer: React.FC<DrawerContentComponentProps> = (props) => {
           className="px-md pb-xl"
         >
           <LiquidGlass
+            style={{ height: 80 }}
             borderRadius={20}
             className="p-md mb-xl"
             pressable={false}
