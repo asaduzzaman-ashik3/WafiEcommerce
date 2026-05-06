@@ -33,6 +33,19 @@ const MAPPING = {
   "questionmark.circle.fill": "help",
   "arrow.left.square.fill": "logout",
   "bell.fill": "notifications",
+  "envelope": "email",
+  "phone": "phone",
+  "tag.fill": "local-offer",
+  "star.fill": "star",
+  "globe": "language",
+  "link": "link",
+  "desktopcomputer": "computer",
+  "sun.max.fill": "light-mode",
+  "moon.fill": "dark-mode",
+  "camera.fill": "camera-alt",
+  "person.crop.circle.badge.questionmark": "contact-support",
+  "person.crop.circle": "account-circle",
+  "checkmark.circle.fill": "check-circle",
 } as IconMapping;
 
 /**
