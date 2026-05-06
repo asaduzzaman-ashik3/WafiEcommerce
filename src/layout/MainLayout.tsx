@@ -26,18 +26,6 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         className="absolute inset-0"
       />
 
-      {/* Glow blobs - Sage green glow */}
-      <View
-        className="absolute rounded-full"
-        style={{
-          top: -height * 0.1,
-          left: -width * 0.2,
-          width: width * 0.7,
-          height: width * 0.7,
-          backgroundColor: colors.glowSage,
-        }}
-      />
-
       <SafeAreaView className="flex-1" edges={["right", "left"]}>
         {children}
       </SafeAreaView>
