@@ -1,12 +1,12 @@
 import { AppBar } from "@/components/shared/AppBar";
+import { AppButton } from "@/components/shared/AppButton";
 import { LiquidGlass } from "@/components/shared/LiquidGlass";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useTheme } from "@/context/ThemeContext";
+import { useAuthContext } from "@/hooks/use-auth-context";
+import { router } from "expo-router";
 import React from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { useAuthContext } from "@/hooks/use-auth-context";
-import { AppButton } from "@/components/shared/AppButton";
-import { router } from "expo-router";
 import { supabase } from "../../../lib/supabase";
 
 export const ProfileScreen = () => {
@@ -50,7 +50,7 @@ export const ProfileScreen = () => {
               className="text-xl font-bold"
               style={{ color: colors.textPrimary }}
             >
-              {profile?.full_name || "Wafi User"}
+              {profile?.name || "Wafi User"}
             </Text>
             <Text
               className="text-base mb-md"

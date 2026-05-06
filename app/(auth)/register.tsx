@@ -68,15 +68,13 @@ export default function RegisterScreen() {
     if (!isNameValid || !isEmailValid || !isPasswordValid) return;
 
     setLoading(true);
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.signUp({
+
+    const { data, error } = await supabase.auth.signUp({
       email: email,
       password: password,
       options: {
         data: {
-          full_name: name,
+          full_name: name, // optional metadata
         },
       },
     });
@@ -85,7 +83,19 @@ export default function RegisterScreen() {
       setAuthError(error.message);
     } else {
       setAuthError("");
-      if (!session) {
+      console.log("user data:", data);
+      const user = data.user;
+
+      // ✅ INSERT INTO profiles table
+      if (user) {
+        await supabase.from("profiles").insert({
+          id: user.id,
+          email: user.email,
+          name: name,
+        });
+      }
+
+      if (!data.session) {
         Alert.alert(
           "Success",
           "Please check your inbox for email verification!",
@@ -95,6 +105,7 @@ export default function RegisterScreen() {
         router.replace("/(tabs)");
       }
     }
+
     setLoading(false);
   }
 
