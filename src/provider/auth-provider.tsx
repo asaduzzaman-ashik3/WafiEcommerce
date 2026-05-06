@@ -1,75 +1,78 @@
 import { AuthContext } from "@/hooks/use-auth-context";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
+import { User } from "@supabase/supabase-js";
 
 export default function AuthProvider({ children }: PropsWithChildren) {
-  const [claims, setClaims] = useState<
-    Record<string, any> | undefined | null
-  >();
-  const [profile, setProfile] = useState<any>();
+  const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Fetch the claims once, and subscribe to auth state changes
   useEffect(() => {
-    const fetchClaims = async () => {
+    const initAuth = async () => {
       setIsLoading(true);
-
-      const { data, error } = await supabase.auth.getClaims();
-
-      if (error) {
-        console.error("Error fetching claims:", error);
+      try {
+        const { data: { user: currentUser } } = await supabase.auth.getUser();
+        setUser(currentUser);
+      } catch (error) {
+        console.error("Auth init error:", error);
+      } finally {
+        setIsLoading(false);
       }
-
-      setClaims(data?.claims ?? null);
-      setIsLoading(false);
     };
 
-    fetchClaims();
+    initAuth();
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, _session) => {
-      console.log("Auth state changed:", { event: _event });
-      const { data } = await supabase.auth.getClaims();
-      setClaims(data?.claims ?? null);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
     });
 
-    // Cleanup subscription on unmount
     return () => {
       subscription.unsubscribe();
     };
   }, []);
 
-  // Fetch the profile when the claims change
   useEffect(() => {
     const fetchProfile = async () => {
-      setIsLoading(true);
+      if (user) {
+        try {
+          const { data, error } = await supabase
+            .from("profiles")
+            .select("*")
+            .eq("id", user.id)
+            .single();
 
-      if (claims) {
-        const { data } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", claims.sub)
-          .single();
-
-        setProfile(data);
+          if (error) {
+            // Fallback to metadata
+            setProfile({
+              name: user.user_metadata?.full_name || user.user_metadata?.name || "Wafi User",
+              email: user.email,
+            });
+          } else {
+            setProfile(data);
+          }
+        } catch (e) {
+          setProfile({
+            name: user.user_metadata?.full_name || user.user_metadata?.name || "Wafi User",
+            email: user.email,
+          });
+        }
       } else {
         setProfile(null);
       }
-
-      setIsLoading(false);
     };
 
     fetchProfile();
-  }, [claims]);
+  }, [user]);
 
   return (
     <AuthContext.Provider
       value={{
-        claims,
+        claims: user ? (user as any) : null,
+        user,
         isLoading,
         profile,
-        isLoggedIn: claims != undefined,
+        isLoggedIn: !!user,
       }}
     >
       {children}
