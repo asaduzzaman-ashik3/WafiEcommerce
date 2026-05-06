@@ -4,9 +4,14 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useTheme } from "@/context/ThemeContext";
 import React from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { useAuthContext } from "@/hooks/use-auth-context";
+import { AppButton } from "@/components/shared/AppButton";
+import { router } from "expo-router";
+import { supabase } from "../../../lib/supabase";
 
 export const ProfileScreen = () => {
-  const { themeMode, setThemeMode, colors, isDark } = useTheme();
+  const { themeMode, setThemeMode, colors } = useTheme();
+  const { isLoggedIn, profile, isLoading } = useAuthContext();
 
   const themeOptions: {
     label: string;
@@ -17,6 +22,10 @@ export const ProfileScreen = () => {
     { label: "Dark", value: "dark", icon: "moon.fill" },
     { label: "System", value: "system", icon: "desktopcomputer" },
   ];
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
 
   return (
     <View className="flex-1">
@@ -29,6 +38,61 @@ export const ProfileScreen = () => {
           paddingBottom: 20,
         }}
       >
+        {isLoggedIn ? (
+          <View className="items-center py-xl mb-md">
+            <View
+              className="w-24 h-24 rounded-full items-center justify-center mb-md"
+              style={{ backgroundColor: colors.primary + "20" }}
+            >
+              <IconSymbol name="person.fill" size={48} color={colors.primary} />
+            </View>
+            <Text
+              className="text-xl font-bold"
+              style={{ color: colors.textPrimary }}
+            >
+              {profile?.full_name || "Wafi User"}
+            </Text>
+            <Text
+              className="text-base mb-md"
+              style={{ color: colors.textSecondary }}
+            >
+              {profile?.email || ""}
+            </Text>
+
+            <AppButton
+              title="Logout"
+              variant="outline"
+              onPress={handleLogout}
+              style={{ width: "100%", marginTop: 8 }}
+            />
+          </View>
+        ) : (
+          <View className="py-xl mb-md gap-md">
+            <View className="items-center mb-md">
+              <View
+                className="w-24 h-24 rounded-full items-center justify-center mb-md"
+                style={{ backgroundColor: colors.textMuted + "20" }}
+              >
+                <IconSymbol
+                  name="person.crop.circle.badge.questionmark"
+                  size={48}
+                  color={colors.textSecondary}
+                />
+              </View>
+              <Text
+                className="text-lg font-medium text-center"
+                style={{ color: colors.textSecondary }}
+              >
+                Sign in to sync your profile and orders across devices
+              </Text>
+            </View>
+            <AppButton
+              title="Login"
+              onPress={() => router.push("/(auth)/login")}
+            />
+          </View>
+        )}
+
         <View className="mb-xl">
           <Text
             className="text-lg font-bold mb-md"
@@ -84,25 +148,6 @@ export const ProfileScreen = () => {
               ))}
             </View>
           </LiquidGlass>
-        </View>
-
-        {/* User Info Placeholder */}
-        <View className="items-center py-xl">
-          <View
-            className="w-24 h-24 rounded-full items-center justify-center mb-md"
-            style={{ backgroundColor: colors.primary + "20" }}
-          >
-            <IconSymbol name="person.fill" size={48} color={colors.primary} />
-          </View>
-          <Text
-            className="text-xl font-bold"
-            style={{ color: colors.textPrimary }}
-          >
-            Wafi User
-          </Text>
-          <Text className="text-base" style={{ color: colors.textSecondary }}>
-            wafi.user@example.com
-          </Text>
         </View>
       </ScrollView>
     </View>

@@ -8,12 +8,14 @@ interface AppTextFieldProps extends TextInputProps {
   label?: string;
   error?: string;
   containerStyle?: ViewStyle;
+  leftIcon?: React.ReactNode;
 }
 
 export const AppTextField: React.FC<AppTextFieldProps> = ({
   label,
   error,
   containerStyle,
+  leftIcon,
   ...props
 }) => {
   const { colors } = useTheme();
@@ -31,10 +33,11 @@ export const AppTextField: React.FC<AppTextFieldProps> = ({
       <LiquidGlass
         borderRadius={Sizes.radiusMd}
         pressable={false}
-        className="h-14 px-md justify-center"
+        className="h-14 px-md flex-row items-center"
       >
+        {leftIcon && <View className="mr-sm">{leftIcon}</View>}
         <TextInput
-          className="text-base font-medium"
+          className="flex-1 text-base font-medium"
           style={{ color: colors.textPrimary }}
           placeholderTextColor={colors.textMuted}
           {...props}

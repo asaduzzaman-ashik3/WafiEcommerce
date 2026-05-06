@@ -17,7 +17,7 @@ interface AppButtonProps {
   textStyle?: TextStyle;
   loading?: boolean;
   disabled?: boolean;
-  variant?: "primary" | "secondary" | "outline";
+  variant?: "primary" | "secondary" | "outline" | "solid";
 }
 
 export const AppButton: React.FC<AppButtonProps> = ({
@@ -37,6 +37,8 @@ export const AppButton: React.FC<AppButtonProps> = ({
         return colors.primary;
       case "secondary":
         return colors.secondary;
+      case "solid":
+        return colors.primary;
       case "outline":
         return "transparent";
       default:
@@ -48,6 +50,7 @@ export const AppButton: React.FC<AppButtonProps> = ({
     switch (variant) {
       case "primary":
       case "secondary":
+      case "solid":
         return "#FFFFFF";
       case "outline":
         return colors.primary;
@@ -62,6 +65,7 @@ export const AppButton: React.FC<AppButtonProps> = ({
       className={`h-14 px-xl min-w-[120px] ${disabled ? "opacity-50" : ""}`}
       style={[{ backgroundColor: getBackgroundColor() }, style]}
       borderRadius={Sizes.radiusFull}
+      blurIntensity={variant === "solid" ? 0 : 30}
     >
       <View 
         className={`flex-1 items-center justify-center ${variant === 'outline' ? 'border' : ''}`}

@@ -88,19 +88,21 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
         className="absolute inset-0"
         style={{
           borderRadius,
-          backgroundColor: colors.glassBg,
+          backgroundColor: blurIntensity === 0 ? "transparent" : colors.glassBg,
           opacity: 1,
           zIndex: -2,
         }}
       />
 
       {/* Layer 2 — Blur pass */}
-      <BlurView
-        intensity={blurIntensity}
-        tint={colors.isDark ? "dark" : "light"}
-        className="absolute inset-0"
-        style={{ borderRadius, zIndex: -1 }}
-      />
+      {blurIntensity > 0 && (
+        <BlurView
+          intensity={blurIntensity}
+          tint={colors.isDark ? "dark" : "light"}
+          className="absolute inset-0"
+          style={{ borderRadius, zIndex: -1 }}
+        />
+      )}
 
       {/* Layer 3 — Shine border */}
       <View

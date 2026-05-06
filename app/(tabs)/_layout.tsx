@@ -9,7 +9,6 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         sceneStyle: { backgroundColor: "transparent" },
-        animationEnabled: false,
       }}
     >
       <Tabs.Screen
