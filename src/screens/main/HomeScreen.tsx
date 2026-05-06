@@ -34,7 +34,7 @@ export const HomeScreen = () => {
   const { colors } = useTheme();
 
   const { width: windowWidth } = useWindowDimensions();
-  const cardWidth = (windowWidth - 43) / 2;
+  const cardWidth = (windowWidth - 100) / 2;
 
   useEffect(() => {
     const loadHomeData = async () => {

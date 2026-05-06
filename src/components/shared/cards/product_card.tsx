@@ -20,18 +20,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const { colors } = useTheme();
 
   return (
-    <View
-      style={{ width: cardWidth }}
-      className={isLast ? "" : "mr-md"}
-    >
+    <View style={{ width: cardWidth }} className={isLast ? "" : "mr-sm"}>
       <LiquidGlass
         className="overflow-hidden"
-        borderRadius={Sizes.radiusMd}
+        borderRadius={Sizes.radiusSm}
         pressable={false}
       >
         <View className="relative">
           <View
-            className="h-[160px] w-full items-center justify-center"
+            className="h-[140px] w-full items-center justify-center"
             style={{ backgroundColor: colors.primary + "05" }}
           >
             <Image
@@ -97,9 +94,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             onPress={() => {}}
             activeOpacity={0.8}
           >
-            <Text className="text-white text-xs font-bold">
-              Add to Cart
-            </Text>
+            <Text className="text-white text-xs font-bold">Add to Cart</Text>
           </TouchableOpacity>
         </View>
       </LiquidGlass>
