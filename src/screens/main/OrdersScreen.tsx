@@ -25,7 +25,7 @@ export const OrdersScreen = () => {
 
   return (
     <View className="flex-1">
-      <AppBar title="My Orders" />
+      <AppBar title="Wafi Ecommerce" />
       <ScrollView
         contentContainerStyle={{
           paddingHorizontal: 16,

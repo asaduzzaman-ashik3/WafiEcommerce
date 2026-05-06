@@ -29,7 +29,7 @@ export const ProfileScreen = () => {
 
   return (
     <View className="flex-1">
-      <AppBar title="Profile" />
+      <AppBar title="Wafi Ecommerce" />
       <ScrollView
         className="flex-1 px-md"
         contentContainerStyle={{
