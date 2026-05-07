@@ -99,13 +99,13 @@ export const AppBar: React.FC<AppBarProps> = ({
               className="relative"
             >
               <IconSymbol name="bell.fill" size={20} color={colors.primary} />
-              {notificationCount > 0 && (
+              {notificationCount > 0 ? (
                 <View className="absolute -top-1 -right-1 min-w-[14px] h-[14px] bg-red-500 rounded-full items-center justify-center px-[3px] border-[1.5px] border-white/20">
                   <Text className="text-[8px] font-bold text-white">
                     {notificationCount > 99 ? "99+" : notificationCount}
                   </Text>
                 </View>
-              )}
+              ) : null}
             </TouchableOpacity>
           </View>
         </LiquidGlass>

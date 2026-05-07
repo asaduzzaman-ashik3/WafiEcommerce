@@ -46,6 +46,9 @@ const MAPPING = {
   "person.crop.circle.badge.questionmark": "contact-support",
   "person.crop.circle": "account-circle",
   "checkmark.circle.fill": "check-circle",
+  "heart": "favorite-border",
+  "plus": "add",
+  "minus": "remove",
 } as IconMapping;
 
 /**

@@ -3,6 +3,7 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Sizes } from "@/constants/sizes";
 import { useTheme } from "@/context/ThemeContext";
 import { Product } from "@/types/product";
+import { router } from "expo-router";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
@@ -19,12 +20,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const { colors } = useTheme();
 
+  const handlePress = () => {
+    router.push({
+      pathname: `/product/${item.id}`,
+      params: { productData: JSON.stringify(item) },
+    });
+  };
+
   return (
     <View style={{ width: cardWidth }} className={isLast ? "" : "mr-sm"}>
       <LiquidGlass
         className="overflow-hidden"
         borderRadius={Sizes.radiusSm}
-        pressable={false}
+        pressable={true}
+        onPress={handlePress}
       >
         <View className="relative">
           <View
@@ -48,16 +57,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             </View>
           </View>
 
-          {item.discount_tag && (
+          {item.discount_tag ? (
             <View
               className="absolute top-2 left-2 px-2 py-1 rounded-full"
               style={{ backgroundColor: colors.secondary }}
             >
               <Text className="text-[10px] font-bold text-white">
-                {item.discount_tag}
+                {String(item.discount_tag)}
               </Text>
             </View>
-          )}
+          ) : null}
         </View>
 
         <View className="p-sm">
@@ -66,7 +75,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             style={{ color: colors.textPrimary }}
             numberOfLines={1}
           >
-            {item.title}
+            {String(item.title)}
           </Text>
 
           <View className="flex-row items-center justify-between mt-xs">
@@ -75,23 +84,26 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 className="text-md font-bold"
                 style={{ color: colors.primary }}
               >
-                ৳{item.discount_price}
+                ৳{String(item.discount_price)}
               </Text>
-              {item.original_price > item.discount_price && (
+              {item.original_price > item.discount_price ? (
                 <Text
                   className="text-[11px] line-through"
                   style={{ color: colors.primary + "80" }}
                 >
-                  ৳{item.original_price}
+                  ৳{String(item.original_price)}
                 </Text>
-              )}
+              ) : null}
             </View>
           </View>
 
           <TouchableOpacity
             className="mt-sm py-2 rounded-lg items-center justify-center shadow-sm"
             style={{ backgroundColor: colors.primary }}
-            onPress={() => {}}
+            onPress={(e) => {
+              // Add to cart logic here
+              e.stopPropagation();
+            }}
             activeOpacity={0.8}
           >
             <Text className="text-white text-xs font-bold">Add to Cart</Text>
