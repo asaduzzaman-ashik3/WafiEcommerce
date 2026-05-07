@@ -10,10 +10,12 @@ import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LiquidGlass } from "./LiquidGlass";
+import { useAuthContext } from "@/hooks/use-auth-context";
 
 export const AppDrawer: React.FC<DrawerContentComponentProps> = (props) => {
   const insets = useSafeAreaInsets();
   const { colors, isDark } = useTheme();
+  const { profile, isLoggedIn } = useAuthContext();
 
   const menuItems = [
     { label: "Home", icon: "house.fill", route: "/" },
@@ -54,14 +56,15 @@ export const AppDrawer: React.FC<DrawerContentComponentProps> = (props) => {
                   className="text-lg font-bold"
                   style={{ color: colors.textPrimary }}
                 >
-                  Wafi User
+                  {isLoggedIn ? profile?.name || "Wafi User" : "Guest User"}
                 </Text>
                 <Text
                   className="text-xs"
                   style={{ color: colors.textSecondary }}
                 >
-                  premium member
+                  {isLoggedIn ? profile?.email || "Premium Member" : "Sign in to access features"}
                 </Text>
+
               </View>
             </View>
           </LiquidGlass>
@@ -106,24 +109,7 @@ export const AppDrawer: React.FC<DrawerContentComponentProps> = (props) => {
       <View
         style={{ paddingBottom: insets.bottom + Sizes.lg }}
         className="px-lg"
-      >
-        <TouchableOpacity
-          className="flex-row items-center p-md rounded-xl"
-          style={{ backgroundColor: colors.error + "15" }}
-        >
-          <IconSymbol
-            name="arrow.left.square.fill"
-            size={20}
-            color={colors.error}
-          />
-          <Text
-            className="ml-md text-base font-bold"
-            style={{ color: colors.error }}
-          >
-            Logout
-          </Text>
-        </TouchableOpacity>
-      </View>
+      ></View>
     </View>
   );
 };

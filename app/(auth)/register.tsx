@@ -14,7 +14,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { supabase } from "../../lib/supabase";
+import { supabase, signInWithGoogle } from "../../lib/supabase";
 
 export default function RegisterScreen() {
   const { colors } = useTheme();
@@ -109,6 +109,23 @@ export default function RegisterScreen() {
     setLoading(false);
   }
 
+  async function handleGoogleSignIn() {
+    setLoading(true);
+    try {
+      const { data, error } = await signInWithGoogle();
+      if (error) {
+        setAuthError(error.message);
+      } else if (data?.user) {
+        router.replace("/(tabs)");
+      }
+    } catch (err: any) {
+      setAuthError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+
   return (
     <View className="flex-1">
       <KeyboardAvoidingView
@@ -201,6 +218,35 @@ export default function RegisterScreen() {
                   loading={loading}
                   style={{ height: 50, marginBottom: 20 }}
                 />
+
+                <View className="flex-row items-center gap-4 mb-6">
+                  <View
+                    className="flex-1 h-[1px]"
+                    style={{ backgroundColor: colors.border + "40" }}
+                  />
+                  <Text
+                    className="text-xs font-medium"
+                    style={{ color: colors.textMuted }}
+                  >
+                    OR CONTINUE WITH
+                  </Text>
+                  <View
+                    className="flex-1 h-[1px]"
+                    style={{ backgroundColor: colors.border + "40" }}
+                  />
+                </View>
+
+                <AppButton
+                  title="Google"
+                  variant="outline"
+                  onPress={handleGoogleSignIn}
+                  loading={loading}
+                  icon={
+                    <IconSymbol name="globe" size={20} color={colors.primary} />
+                  }
+                  style={{ height: 50, marginBottom: 15 }}
+                />
+
               </View>
 
               <View className="flex-row justify-center items-center mt-4 gap-1">
