@@ -13,7 +13,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { supabase, signInWithGoogle } from "../../lib/supabase";
+import { signInWithGoogle, supabase } from "../../lib/supabase";
 
 export default function LoginScreen() {
   const { colors } = useTheme();
@@ -94,7 +94,6 @@ export default function LoginScreen() {
       setLoading(false);
     }
   }
-
 
   return (
     <View className="flex-1">
@@ -211,7 +210,7 @@ export default function LoginScreen() {
 
               <AppButton
                 title="Google"
-                variant="outline"
+                variant="solid"
                 onPress={handleGoogleSignIn}
                 loading={loading}
                 icon={
@@ -219,7 +218,6 @@ export default function LoginScreen() {
                 }
                 style={{ height: 50, marginBottom: 15 }}
               />
-
 
               <View className="flex-row justify-center items-center mt-4 gap-1">
                 <Text style={{ color: colors.textSecondary }}>

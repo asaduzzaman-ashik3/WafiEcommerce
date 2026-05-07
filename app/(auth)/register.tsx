@@ -14,7 +14,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { supabase, signInWithGoogle } from "../../lib/supabase";
+import { signInWithGoogle, supabase } from "../../lib/supabase";
 
 export default function RegisterScreen() {
   const { colors } = useTheme();
@@ -124,7 +124,6 @@ export default function RegisterScreen() {
       setLoading(false);
     }
   }
-
 
   return (
     <View className="flex-1">
@@ -238,7 +237,7 @@ export default function RegisterScreen() {
 
                 <AppButton
                   title="Google"
-                  variant="outline"
+                  variant="solid"
                   onPress={handleGoogleSignIn}
                   loading={loading}
                   icon={
@@ -246,7 +245,6 @@ export default function RegisterScreen() {
                   }
                   style={{ height: 50, marginBottom: 15 }}
                 />
-
               </View>
 
               <View className="flex-row justify-center items-center mt-4 gap-1">
