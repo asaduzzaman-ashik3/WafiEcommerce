@@ -148,10 +148,10 @@ export const HomeScreen = () => {
                 >
                   <View
                     style={{
+                      flex: 1,
                       flexDirection: "row",
                       alignItems: "center",
                       paddingHorizontal: 18,
-                      paddingVertical: 14,
                       gap: 10,
                     }}
                   >
