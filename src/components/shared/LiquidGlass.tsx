@@ -138,7 +138,12 @@ export const LiquidGlass: React.FC<LiquidGlassProps> = ({
       />
 
       {/* Layer 4 — Content */}
-      <View className="flex-1 relative z-[3] justify-center ">{children}</View>
+      <View
+        className="relative justify-center"
+        style={{ zIndex: 3, flexGrow: 1 }}
+      >
+        {children}
+      </View>
     </Animated.View>
   );
 

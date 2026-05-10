@@ -34,7 +34,7 @@ export const HomeScreen = () => {
   const { colors } = useTheme();
 
   const { width: windowWidth } = useWindowDimensions();
-  const cardWidth = (windowWidth - 80) / 2;
+  const cardWidth = Math.max((windowWidth - 80) / 2, 140);
 
   useEffect(() => {
     const loadHomeData = async () => {
@@ -108,11 +108,13 @@ export const HomeScreen = () => {
       <AppBar title="Wafi Ecommerce" />
 
       <ScrollView
-        className="flex-1 px-4"
+        className="flex-1"
         showsVerticalScrollIndicator={false}
+        removeClippedSubviews={false}
         contentContainerStyle={{
           paddingTop: 110, // appBarHeight + small margin
           paddingBottom: 20,
+          paddingHorizontal: 16,
         }}
       >
         {loadingBanners ? (
@@ -128,6 +130,7 @@ export const HomeScreen = () => {
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
+              removeClippedSubviews={false}
               className="-mx-4"
               contentContainerStyle={{
                 paddingHorizontal: 16,
@@ -212,6 +215,7 @@ export const HomeScreen = () => {
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
+              removeClippedSubviews={false}
               className="-mx-4"
               contentContainerStyle={{
                 paddingHorizontal: 16,
@@ -245,6 +249,7 @@ export const HomeScreen = () => {
                 <ScrollView
                   horizontal
                   showsHorizontalScrollIndicator={false}
+                  removeClippedSubviews={false}
                   className="-mx-4"
                   contentContainerStyle={{
                     paddingHorizontal: 16,
@@ -280,6 +285,7 @@ export const HomeScreen = () => {
                 <ScrollView
                   horizontal
                   showsHorizontalScrollIndicator={false}
+                  removeClippedSubviews={false}
                   className="-mx-4"
                   contentContainerStyle={{
                     paddingHorizontal: 16,
@@ -315,6 +321,7 @@ export const HomeScreen = () => {
                 <ScrollView
                   horizontal
                   showsHorizontalScrollIndicator={false}
+                  removeClippedSubviews={false}
                   className="-mx-4"
                   contentContainerStyle={{
                     paddingHorizontal: 16,
