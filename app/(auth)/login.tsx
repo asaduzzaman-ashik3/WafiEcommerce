@@ -191,7 +191,7 @@ export default function LoginScreen() {
                 style={{ height: 50, marginBottom: 15 }}
               />
 
-              <View className="flex-row items-center gap-4 mb-6">
+              {/* <View className="flex-row items-center gap-4 mb-6">
                 <View
                   className="flex-1 h-[1px]"
                   style={{ backgroundColor: colors.border + "40" }}
@@ -217,7 +217,7 @@ export default function LoginScreen() {
                   <IconSymbol name="globe" size={20} color={colors.primary} />
                 }
                 style={{ height: 50, marginBottom: 15 }}
-              />
+              /> */}
 
               <View className="flex-row justify-center items-center mt-4 gap-1">
                 <Text style={{ color: colors.textSecondary }}>

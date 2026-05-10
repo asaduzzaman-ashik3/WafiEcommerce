@@ -19,7 +19,11 @@ const ExpoSecureStoreAdapter = {
   },
 };
 
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import * as WebBrowser from "expo-web-browser";
+import * as AuthSession from "expo-auth-session";
+import * as Linking from "expo-linking";
+
+WebBrowser.maybeCompleteAuthSession();
 
 export const supabase = createClient(
   process.env.EXPO_PUBLIC_SUPABASE_URL ?? "",
@@ -35,32 +39,38 @@ export const supabase = createClient(
   },
 );
 
-GoogleSignin.configure({
-  webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
-  offlineAccess: true,
-  forceCodeForRefreshToken: false,
-});
 
 export const signInWithGoogle = async () => {
-  console.log("client id", process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID);
   try {
-    await GoogleSignin.hasPlayServices();
-    const userInfo = await GoogleSignin.signIn();
-    const idToken = userInfo.idToken || userInfo.data?.idToken;
-    console.log("ID TOKEN:", idToken);
-    console.log("user info", userInfo);
-    if (idToken) {
-      const { data, error } = await supabase.auth.signInWithIdToken({
-        provider: "google",
-        token: idToken,
-      });
-      console.log("data", data);
-      return { data, error };
-    } else {
-      throw new Error("no ID token present!");
+    const redirectUri = AuthSession.makeRedirectUri();
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: redirectUri,
+        skipBrowserRedirect: true,
+      },
+    });
+
+    if (error) throw error;
+
+    const res = await WebBrowser.openAuthSessionAsync(data.url, redirectUri);
+
+    if (res.type === "success") {
+      const { url } = res;
+      const { queryParams } = Linking.parse(url);
+      const access_token = queryParams?.access_token as string;
+      const refresh_token = queryParams?.refresh_token as string;
+
+      if (access_token && refresh_token) {
+        return await supabase.auth.setSession({
+          access_token,
+          refresh_token,
+        });
+      }
     }
+    return { data: null, error: null };
   } catch (error: any) {
-    console.log("error from google login ", error);
+    console.error("Google login error:", error);
     return { data: null, error };
   }
 };
