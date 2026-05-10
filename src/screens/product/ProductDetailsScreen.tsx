@@ -1,4 +1,4 @@
-import { AppBar } from "@/components/shared/AppBar";
+import { SecondaryAppBar } from "@/components/shared/SecondaryAppBar";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Sizes, window } from "@/constants/sizes";
 import { useTheme } from "@/context/ThemeContext";
@@ -63,7 +63,7 @@ export const ProductDetailsScreen = () => {
 
   return (
     <View className="flex-1" style={{ backgroundColor: colors.background }}>
-      <AppBar title="Details" showBack onBackPress={() => router.back()} />
+      <SecondaryAppBar showBack onBackPress={() => router.back()} />
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
