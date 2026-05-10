@@ -70,14 +70,14 @@ export const ProductDetailsScreen = () => {
         contentContainerStyle={{ paddingTop: insets.top + Sizes.appBarHeight }}
       >
         <View
-          style={{ height: window.height * 0.45 }}
+          style={{ height: window.height * 0.38 }}
           className="relative overflow-hidden bg-white"
         >
           <ReanimatedCarousel
             ref={carouselRef}
             loop
             width={window.width}
-            height={window.height * 0.45}
+            height={window.height * 0.38}
             autoPlay={false}
             autoPlayInterval={5000}
             data={product.image_url}
@@ -130,7 +130,7 @@ export const ProductDetailsScreen = () => {
         </View>
 
         <View
-          className="p-md bg-white rounded-t-[32px]"
+          className="p-md bg-white"
           style={{ backgroundColor: colors.surface }}
         >
           <View className="flex-row justify-between items-start">
@@ -186,9 +186,6 @@ export const ProductDetailsScreen = () => {
                   </Text>
                 ) : null}
               </View>
-              <Text className="text-[10px] text-gray-400 mt-1">
-                Inclusive of all taxes
-              </Text>
             </View>
             <View className="flex-row items-center bg-white rounded-xl p-1 shadow-sm">
               <TouchableOpacity
@@ -327,11 +324,9 @@ export const ProductDetailsScreen = () => {
         </View>
       </ScrollView>
       <View
-        className="absolute bottom-0 left-0 right-0 p-md pb-lg shadow-2xl"
+        className="absolute bottom-0 left-0 right-0 p-md pb-lg border-[1px] border-gray-200"
         style={{
           backgroundColor: colors.surface,
-          borderTopLeftRadius: 32,
-          borderTopRightRadius: 32,
           paddingBottom: insets.bottom + 12,
         }}
       >
