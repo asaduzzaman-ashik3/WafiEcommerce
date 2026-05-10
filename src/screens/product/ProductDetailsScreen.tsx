@@ -108,7 +108,7 @@ export const ProductDetailsScreen = () => {
                   borderRadius: 6,
                   borderColor:
                     activeIndex === index ? colors.primary : "transparent",
-                  backgroundColor: "white",
+                  backgroundColor: "transparent",
                   shadowColor: "#000",
                   shadowOffset: { width: 0, height: 2 },
                   shadowOpacity: 0.1,
@@ -121,9 +121,6 @@ export const ProductDetailsScreen = () => {
                   className="w-full h-full"
                   resizeMode="cover"
                 />
-                {activeIndex !== index && (
-                  <View className="absolute inset-0 bg-black/20" />
-                )}
               </TouchableOpacity>
             ))}
           </View>
